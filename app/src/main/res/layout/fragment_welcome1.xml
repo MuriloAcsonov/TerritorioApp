@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_welcome"
+    android:padding="30dp" >
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/gray"
+        android:textSize="25dp"
+        android:textColor="@color/lightgray"
+        android:id="@+id/edtNome"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/spnCongregacao"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:textColorHint="@color/gray"
+        android:textSize="25dp"
+        android:textColor="@color/lightgray"
+        android:layout_marginTop="25dp"
+        android:id="@+id/spnCongregacao"
+        app:layout_constraintTop_toBottomOf="@id/edtNome"
+        app:layout_constraintBottom_toTopOf="@id/edtSenha"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Senha"
+        android:textColorHint="@color/gray"
+        android:textSize="25dp"
+        android:textColor="@color/lightgray"
+        android:inputType="textPassword"
+        android:layout_marginTop="25dp"
+        android:id="@+id/edtSenha"
+        app:layout_constraintTop_toBottomOf="@id/spnCongregacao"
+        app:layout_constraintBottom_toTopOf="@id/btAvancar"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/lightgray"
+        android:layout_marginTop="50dp"
+        android:textSize="17dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:id="@+id/btAvancar"
+        android:background="@drawable/button01"
+        android:text="Avançar"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtSenha"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

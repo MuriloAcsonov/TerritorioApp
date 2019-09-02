@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_welcome"
+    android:id="@+id/welcome2"
     android:padding="30dp" >
 
     <Spinner
@@ -17,7 +18,7 @@
         android:layout_marginTop="25dp"
         android:id="@+id/spnGrupo"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btAvancar2"
+        app:layout_constraintBottom_toTopOf="@+id/btConcluir"
         app:layout_constraintVertical_chainStyle="packed"
         />
 
@@ -29,9 +30,10 @@
         android:textSize="17dp"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
-        android:id="@+id/btAvancar2"
-        android:background="@drawable/button01"
-        android:text="Avançar"
+        android:id="@+id/btConcluir"
+        android:background="@drawable/button_welcome_avancar"
+        android:textAllCaps="false"
+        android:text="Concluir"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spnGrupo"
         app:layout_constraintBottom_toBottomOf="parent"/>

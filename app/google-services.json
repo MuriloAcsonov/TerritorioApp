@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "769591480679",
+    "firebase_url": "https://app-territorio.firebaseio.com",
+    "project_id": "app-territorio",
+    "storage_bucket": "app-territorio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769591480679:android:938a96e05dd79882",
+        "android_client_info": {
+          "package_name": "com.muriloacsonov.territorio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769591480679-2a5r4d1qp6nq7t59de9l2ovbpkdejc6i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muriloacsonov.territorio",
+            "certificate_hash": "bb0d96a14cc8a06f91736df7d3dd925e22b5d378"
+          }
+        },
+        {
+          "client_id": "769591480679-13kpc7nvg8ncg1h5h3e0g9pm2ggrc4oo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVBotF8scec2iC8zOwWlmumIYFd5D3YIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769591480679-13kpc7nvg8ncg1h5h3e0g9pm2ggrc4oo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

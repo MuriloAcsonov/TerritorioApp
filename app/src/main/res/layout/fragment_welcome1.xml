@@ -18,21 +18,22 @@
         android:textColor="@color/lightgray"
         android:id="@+id/edtNome"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/spnCongregacao"
+        app:layout_constraintBottom_toTopOf="@+id/edtEmail"
         app:layout_constraintVertical_chainStyle="packed"
         />
 
-    <Spinner
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:spinnerMode="dialog"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
         android:textColorHint="@color/gray"
+        android:layout_marginTop="25dp"
         android:textSize="25dp"
         android:textColor="@color/lightgray"
-        android:layout_marginTop="25dp"
-        android:id="@+id/spnCongregacao"
+        android:id="@+id/edtEmail"
         app:layout_constraintTop_toBottomOf="@id/edtNome"
-        app:layout_constraintBottom_toTopOf="@id/edtSenha"
+        app:layout_constraintBottom_toTopOf="@+id/edtSenha"
         />
 
     <EditText
@@ -45,7 +46,7 @@
         android:inputType="textPassword"
         android:layout_marginTop="25dp"
         android:id="@+id/edtSenha"
-        app:layout_constraintTop_toBottomOf="@id/spnCongregacao"
+        app:layout_constraintTop_toBottomOf="@id/edtEmail"
         app:layout_constraintBottom_toTopOf="@id/btAvancar"
         />
 

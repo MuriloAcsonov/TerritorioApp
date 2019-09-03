@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.muriloacsonov.territorio.firebase.CongregacaoFs;
 import com.muriloacsonov.territorio.helper.WelcomeHelper;
 import com.muriloacsonov.territorio.model.Cadastro;
 
@@ -38,6 +39,11 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CongregacaoFs congregacaoFs = new CongregacaoFs();
+
+        congregacaoFs.getCongregacoes();
+
     }
 
     @Override

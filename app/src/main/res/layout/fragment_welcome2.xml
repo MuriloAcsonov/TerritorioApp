@@ -15,11 +15,23 @@
         android:textColorHint="@color/gray"
         android:textSize="25dp"
         android:textColor="@color/lightgray"
+        android:id="@+id/spnCongregacao"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/spnGrupo"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        android:textColorHint="@color/gray"
+        android:textSize="25dp"
+        android:textColor="@color/lightgray"
         android:layout_marginTop="25dp"
         android:id="@+id/spnGrupo"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spnCongregacao"
         app:layout_constraintBottom_toTopOf="@+id/btConcluir"
-        app:layout_constraintVertical_chainStyle="packed"
         />
 
     <Button

@@ -11,7 +11,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,21 +26,42 @@ import java.util.List;
 
 public class WelcomeFragment2 extends Fragment implements View.OnClickListener  {
 
+    private List<Congregacao> mCongregacoes;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         CongregacaoFs congregacaoFs = new CongregacaoFs();
 
-        List<Congregacao> mCongregacoes = congregacaoFs.getCongregacoes();
+        mCongregacoes = congregacaoFs.getCongregacoes();
 
         if(mCongregacoes.size() > 0){
 
             WelcomeHelper welcomeHelper = new WelcomeHelper(this.getView());
 
-            boolean mResultado = welcomeHelper.CarregarCongregacoes(mCongregacoes);
+            welcomeHelper.CarregarCongregacoes(mCongregacoes);
 
         }
+
+        Spinner spnCongregacao = (Spinner) this.getView().findViewById(R.id.spnCongregacao);
+        final Spinner spnGrupo = (Spinner) this.getView().findViewById(R.id.spnGrupo);
+
+        spnCongregacao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+
+                Congregacao mCongregacao = mCongregacoes.get(position);
+                spnGrupo.setVisibility(View.VISIBLE);
+                WelcomeHelper welcomeHelper = new WelcomeHelper(getParentFragment().getView());
+                welcomeHelper.CarregarGrupos(mCongregacao.getGrupos());
+
+            }
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                spnGrupo.setVisibility(View.INVISIBLE);
+            }
+        });
 
     }
 

@@ -106,6 +106,30 @@ public class WelcomeHelper {
 
     }
 
+    public boolean CarregarGrupos(List<String> pGrupos){
+
+        boolean mRetorno = false;
+
+        try {
+
+            ArrayAdapter arrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, pGrupos);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            spnGrupo.setAdapter(arrayAdapter);
+
+            mRetorno = true;
+
+        }
+        catch (Exception ex){
+
+            Log.i("Spinner Grupos", ex.toString());
+
+        }
+
+        return mRetorno;
+
+    }
+
     public Cadastro getCadastro() {
 
         if (fragment1) {

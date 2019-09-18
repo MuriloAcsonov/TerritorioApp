@@ -6,7 +6,7 @@ import java.util.List;
 public class Congregacao implements Serializable {
 
     private String id;
-    private String[] grupos;
+    private List<String> grupos;
     private String nome;
     private List<Mapa> mapas;
 
@@ -19,11 +19,11 @@ public class Congregacao implements Serializable {
         this.id = id;
     }
 
-    public String[] getGrupos() {
+    public List<String> getGrupos() {
         return grupos;
     }
 
-    public void setGrupos(String[] grupos) {
+    public void setGrupos(List<String> grupos) {
         this.grupos = grupos;
     }
 

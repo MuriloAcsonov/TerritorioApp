@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.muriloacsonov.territorio.firebase.CongregacaoFs;
 import com.muriloacsonov.territorio.helper.WelcomeHelper;
 import com.muriloacsonov.territorio.model.Cadastro;
 
@@ -19,7 +18,7 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
 
     ConcluidoListener concluidoListener;
 
-    public interface ConcluidoListener{
+    public interface ConcluidoListener {
         public void onConcluir(Cadastro cadastro, boolean concluiu);
     }
 
@@ -27,10 +26,9 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        try{
+        try {
             concluidoListener = (ConcluidoListener) context;
-        }
-        catch (ClassCastException classException){
+        } catch (ClassCastException classException) {
             Toast.makeText(context, "Não vai ser possivel avançar no momento", Toast.LENGTH_LONG).show();
         }
 
@@ -39,10 +37,6 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        CongregacaoFs congregacaoFs = new CongregacaoFs();
-
-        congregacaoFs.getCongregacoes();
 
     }
 
@@ -59,9 +53,9 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view){
+    public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.btAvancar:
 
@@ -69,7 +63,7 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
 
                 boolean valido = welcomeHelper.ValidarCampos();
 
-                if(valido){
+                if (valido) {
 
                     Cadastro cadastro = welcomeHelper.getCadastro();
 

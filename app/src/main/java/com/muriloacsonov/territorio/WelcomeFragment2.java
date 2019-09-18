@@ -15,13 +15,31 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.muriloacsonov.territorio.firebase.CongregacaoFs;
+import com.muriloacsonov.territorio.helper.WelcomeHelper;
 import com.muriloacsonov.territorio.model.Cadastro;
+import com.muriloacsonov.territorio.model.Congregacao;
+
+import java.util.List;
 
 public class WelcomeFragment2 extends Fragment implements View.OnClickListener  {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CongregacaoFs congregacaoFs = new CongregacaoFs();
+
+        List<Congregacao> mCongregacoes = congregacaoFs.getCongregacoes();
+
+        if(mCongregacoes.size() > 0){
+
+            WelcomeHelper welcomeHelper = new WelcomeHelper(this.getView());
+
+            boolean mResultado = welcomeHelper.CarregarCongregacoes(mCongregacoes);
+
+        }
+
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.muriloacsonov.territorio.helper;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -9,54 +11,58 @@ import androidx.fragment.app.Fragment;
 
 import com.muriloacsonov.territorio.R;
 import com.muriloacsonov.territorio.model.Cadastro;
+import com.muriloacsonov.territorio.model.Congregacao;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WelcomeHelper {
 
-    private EditText nome;
-    private EditText senha;
-    private Spinner congregacao;
-    private Spinner grupo;
+    private EditText txtNome;
+    private EditText txtSenha;
+    private Spinner spnCongregacao;
+    private Spinner spnGrupo;
+    private View view;
+
     private boolean fragment1 = true;
 
     private Cadastro cadastro;
 
-    public WelcomeHelper(View fragment){
+    public WelcomeHelper(View fragment) {
+
+        this.view = fragment;
 
         this.cadastro = new Cadastro();
 
-        switch ((int) fragment.getTag()){
+        switch ((int) fragment.getTag()) {
 
             case 1:
-
-                this.nome = (EditText) fragment.findViewById(R.id.edtNome);
-                this.senha = (EditText) fragment.findViewById(R.id.edtSenha);
-                this.congregacao = (Spinner) fragment.findViewById(R.id.spnCongregacao);
-
+                this.txtNome = (EditText) fragment.findViewById(R.id.edtNome);
+                this.txtSenha = (EditText) fragment.findViewById(R.id.edtSenha);
                 break;
 
             case 2:
-
-                this.grupo = (Spinner) fragment.findViewById(R.id.spnGrupo);
                 fragment1 = false;
-
+                this.spnGrupo = (Spinner) fragment.findViewById(R.id.spnGrupo);
+                this.spnCongregacao = (Spinner) fragment.findViewById(R.id.spnCongregacao);
                 break;
         }
 
     }
 
-    public boolean ValidarCampos(){
+    public boolean ValidarCampos() {
 
         boolean valido = true;
 
-        if(fragment1){
+        if (fragment1) {
 
-            if(this.nome.getText().toString().equals("")){
-                this.nome.setError("Este campo não pode ser vazio!");
+            if (this.txtNome.getText().toString().equals("")) {
+                this.txtNome.setError("Este campo não pode ser vazio!");
                 valido = false;
             }
 
-            if(this.senha.getText().toString().equals("")){
-                this.senha.setError("Este campo não pode ser vazio!");
+            if (this.txtSenha.getText().toString().equals("")) {
+                this.txtSenha.setError("Este campo não pode ser vazio!");
                 valido = false;
             }
 
@@ -66,11 +72,45 @@ public class WelcomeHelper {
 
     }
 
-    public  Cadastro getCadastro(){
+    public boolean CarregarCongregacoes(List<Congregacao> pCongregacoes) {
 
-        if(fragment1){
-            cadastro.setNome(this.nome.getText().toString());
-            cadastro.setSenha(this.senha.getText().toString());
+        boolean mRetorno = false;
+
+        String[] mNomes = new String[pCongregacoes.size()];
+
+        for (int i = 0; i < pCongregacoes.size(); i++) {
+            mNomes[i] = pCongregacoes.get(i).getNome();
+        }
+
+        if (mNomes.length > 0) {
+
+            try {
+
+                ArrayAdapter arrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, mNomes);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                spnCongregacao.setAdapter(arrayAdapter);
+
+                mRetorno = true;
+
+            }
+            catch (Exception ex){
+
+                Log.i("Spinner Congregacoes", ex.toString());
+
+            }
+
+        }
+
+        return mRetorno;
+
+    }
+
+    public Cadastro getCadastro() {
+
+        if (fragment1) {
+            cadastro.setNome(this.txtNome.getText().toString());
+            cadastro.setSenha(this.txtSenha.getText().toString());
         }
 
         return cadastro;

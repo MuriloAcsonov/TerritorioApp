@@ -11,6 +11,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.muriloacsonov.territorio.model.Congregacao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CongregacaoFs {
@@ -23,25 +24,24 @@ public class CongregacaoFs {
 
     }
 
-    public List<Congregacao> getCongregacoes(){
+    public List<Congregacao> getCongregacoes() {
+
+        final List<Congregacao> mCongregacoes = new ArrayList<Congregacao>();
 
         firestore.collection("congregacao").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("LISTENER:", document.getId() + " => " + document.getData());
+                        mCongregacoes.add(document.toObject(Congregacao.class));
+                        Log.i("Get Congregacoes", "Congregacoes geradas com sucesso");
                     }
                 }
-                else {
-                    Log.w("LOUCURA: ", task.getException());
-                }
-
             }
         });
 
-        return null;
+        return mCongregacoes;
     }
 
 }

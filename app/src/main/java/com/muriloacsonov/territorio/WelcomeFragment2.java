@@ -6,8 +6,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.muriloacsonov.territorio.firebase.CongregacaoFs;
 import com.muriloacsonov.territorio.helper.WelcomeHelper;
 import com.muriloacsonov.territorio.model.Cadastro;
 import com.muriloacsonov.territorio.model.Congregacao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WelcomeFragment2 extends Fragment implements View.OnClickListener  {
@@ -29,32 +37,39 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
     private List<Congregacao> mCongregacoes;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        CongregacaoFs congregacaoFs = new CongregacaoFs();
+        View mView = inflater.inflate(R.layout.fragment_welcome2, container, false);
+        mView.setTag(2);
 
-        mCongregacoes = congregacaoFs.getCongregacoes();
+        loadCongregacoes(mView);
 
-        if(mCongregacoes.size() > 0){
+        Button concluir = (Button) mView.findViewById(R.id.btConcluir);
 
-            WelcomeHelper welcomeHelper = new WelcomeHelper(this.getView());
+        concluir.setOnClickListener(this);
 
-            welcomeHelper.CarregarCongregacoes(mCongregacoes);
+        Bundle bundle = getArguments();
 
-        }
+        Cadastro cadastro = (Cadastro) bundle.getSerializable("cadastro");
 
-        Spinner spnCongregacao = (Spinner) this.getView().findViewById(R.id.spnCongregacao);
-        final Spinner spnGrupo = (Spinner) this.getView().findViewById(R.id.spnGrupo);
+        final Spinner spnCongregacao = (Spinner) mView.findViewById(R.id.spnCongregacao);
+        final Spinner spnGrupo = (Spinner) mView.findViewById(R.id.spnGrupo);
 
         spnCongregacao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
+                    Congregacao mCongregacao = mCongregacoes.get(position);
 
-                Congregacao mCongregacao = mCongregacoes.get(position);
-                spnGrupo.setVisibility(View.VISIBLE);
-                WelcomeHelper welcomeHelper = new WelcomeHelper(getParentFragment().getView());
-                welcomeHelper.CarregarGrupos(mCongregacao.getGrupos());
+                    if (mCongregacao.getGrupos() == null){
+                        spnGrupo.setVisibility(View.INVISIBLE);
+                        spnGrupo.setAdapter(null);
+                    }
+                    else{
+                        WelcomeHelper welcomeHelper = new WelcomeHelper(getView());
+                        welcomeHelper.CarregarGrupos(mCongregacao.getGrupos());
+                        spnGrupo.setVisibility(View.VISIBLE);
+                    }
 
             }
             public void onNothingSelected(AdapterView<?> parent)
@@ -63,24 +78,37 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
             }
         });
 
+        return mView;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    private void loadCongregacoes(final View pView){
 
-        View view = inflater.inflate(R.layout.fragment_welcome2, container, false);
-        view.setTag(2);
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        Button concluir = (Button) view.findViewById(R.id.btConcluir);
+        firestore.collection("congregacao").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-        concluir.setOnClickListener(this);
+                if (task.isSuccessful()) {
 
-        Bundle bundle = getArguments();
+                    mCongregacoes = new ArrayList<Congregacao>();
 
-        Cadastro cadastro = (Cadastro) bundle.getSerializable("cadastro");
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        mCongregacoes.add(document.toObject(Congregacao.class));
+                        Log.i("Get Congregacoes", "Congregacoes geradas com sucesso");
+                    }
 
-        return view;
+                    if(mCongregacoes.size() > 0){
+
+                        WelcomeHelper welcomeHelper = new WelcomeHelper(pView);
+
+                        welcomeHelper.CarregarCongregacoes(mCongregacoes);
+
+                    }
+                }
+            }
+        });
+
     }
 
     @Override

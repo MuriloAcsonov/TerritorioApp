@@ -1,19 +1,15 @@
 package com.muriloacsonov.territorio.helper;
 
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import androidx.fragment.app.Fragment;
-
 import com.muriloacsonov.territorio.R;
-import com.muriloacsonov.territorio.model.Cadastro;
+import com.muriloacsonov.territorio.model.Dirigente;
 import com.muriloacsonov.territorio.model.Congregacao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WelcomeHelper {
@@ -26,13 +22,13 @@ public class WelcomeHelper {
 
     private boolean fragment1 = true;
 
-    private Cadastro cadastro;
+    private Dirigente dirigente;
 
     public WelcomeHelper(View fragment) {
 
         this.view = fragment;
 
-        this.cadastro = new Cadastro();
+        this.dirigente = new Dirigente();
 
         switch ((int) fragment.getTag()) {
 
@@ -80,6 +76,7 @@ public class WelcomeHelper {
 
         for (int i = 0; i < pCongregacoes.size(); i++) {
             mNomes[i] = pCongregacoes.get(i).getNome();
+            Log.i("ID CONGREGACAO", pCongregacoes.get(i).getId());
         }
 
         if (mNomes.length > 0) {
@@ -130,14 +127,14 @@ public class WelcomeHelper {
 
     }
 
-    public Cadastro getCadastro() {
+    public Dirigente getDirigente() {
 
         if (fragment1) {
-            cadastro.setNome(this.txtNome.getText().toString());
-            cadastro.setSenha(this.txtSenha.getText().toString());
+            dirigente.setNome(this.txtNome.getText().toString());
+            dirigente.setSenha(this.txtSenha.getText().toString());
         }
 
-        return cadastro;
+        return dirigente;
 
     }
 

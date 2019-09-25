@@ -12,14 +12,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.muriloacsonov.territorio.helper.WelcomeHelper;
-import com.muriloacsonov.territorio.model.Cadastro;
+import com.muriloacsonov.territorio.model.Dirigente;
 
 public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
 
     ConcluidoListener concluidoListener;
 
     public interface ConcluidoListener {
-        public void onConcluir(Cadastro cadastro, boolean concluiu);
+        public void onConcluir(Dirigente dirigente, boolean concluiu);
     }
 
     @Override
@@ -65,9 +65,9 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
 
                 if (valido) {
 
-                    Cadastro cadastro = welcomeHelper.getCadastro();
+                    Dirigente dirigente = welcomeHelper.getDirigente();
 
-                    concluidoListener.onConcluir(cadastro, false);
+                    concluidoListener.onConcluir(dirigente, false);
 
                 }
 

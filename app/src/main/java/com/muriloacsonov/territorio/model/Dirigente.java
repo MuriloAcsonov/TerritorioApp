@@ -2,12 +2,14 @@ package com.muriloacsonov.territorio.model;
 
 import java.io.Serializable;
 
-public class Cadastro implements Serializable {
+public class Dirigente implements Serializable {
 
     private String nome;
     private String congregacao;
+    private String email;
     private String senha;
     private String grupo;
+    private Boolean adm;
 
     //Getters and Setters
 
@@ -43,4 +45,19 @@ public class Cadastro implements Serializable {
         this.grupo = grupo;
     }
 
+    public Boolean getAdm() {
+        return adm;
+    }
+
+    public void setAdm(Boolean adm) {
+        this.adm = adm;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

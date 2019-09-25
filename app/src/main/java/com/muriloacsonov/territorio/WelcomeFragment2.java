@@ -1,9 +1,6 @@
 package com.muriloacsonov.territorio;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,17 +13,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.muriloacsonov.territorio.firebase.CongregacaoFs;
 import com.muriloacsonov.territorio.helper.WelcomeHelper;
-import com.muriloacsonov.territorio.model.Cadastro;
+import com.muriloacsonov.territorio.model.Dirigente;
 import com.muriloacsonov.territorio.model.Congregacao;
 
 import java.util.ArrayList;
@@ -35,6 +30,8 @@ import java.util.List;
 public class WelcomeFragment2 extends Fragment implements View.OnClickListener  {
 
     private List<Congregacao> mCongregacoes;
+
+    private Dirigente cDirigente;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +48,9 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
 
         Bundle bundle = getArguments();
 
-        Cadastro cadastro = (Cadastro) bundle.getSerializable("cadastro");
+        Dirigente dirigente = (Dirigente) bundle.getSerializable("dirigente");
+
+        cDirigente = (Dirigente) bundle.getSerializable("dirigente");
 
         final Spinner spnCongregacao = (Spinner) mView.findViewById(R.id.spnCongregacao);
         final Spinner spnGrupo = (Spinner) mView.findViewById(R.id.spnGrupo);
@@ -69,6 +68,11 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
                         WelcomeHelper welcomeHelper = new WelcomeHelper(getView());
                         welcomeHelper.CarregarGrupos(mCongregacao.getGrupos());
                         spnGrupo.setVisibility(View.VISIBLE);
+
+                        ////TESTE
+
+                        cDirigente.setAdm(true);
+                        cDirigente.setCongregacao(mCongregacao.getId());
                     }
 
             }
@@ -85,7 +89,7 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        firestore.collection("congregacao").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firestore.collection("congregacao").orderBy("criacao", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -94,7 +98,10 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
                     mCongregacoes = new ArrayList<Congregacao>();
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        mCongregacoes.add(document.toObject(Congregacao.class));
+
+                        Congregacao mCongregacao = document.toObject(Congregacao.class);
+                        mCongregacao.setId(document.getId());
+                        mCongregacoes.add(mCongregacao);
                         Log.i("Get Congregacoes", "Congregacoes geradas com sucesso");
                     }
 
@@ -118,7 +125,7 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
 
             case R.id.btConcluir:
 
-                ((WelcomeActivity) getActivity()).onConcluir(null, true);
+                ((WelcomeActivity) getActivity()).onConcluir(cDirigente, true);
 
                 break;
         }

@@ -3,6 +3,7 @@ package com.muriloacsonov.territorio.model;
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Mapa implements Serializable {
 
@@ -11,6 +12,8 @@ public class Mapa implements Serializable {
     private String imagem;
     private Timestamp ultimabaixa;
     private String usuario;
+    private List<String> grupos;
+    //private List
 
     //GETTERS && SETTERS
     public String getId() {
@@ -52,4 +55,13 @@ public class Mapa implements Serializable {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
+
+    public String getNomeGrupo() {
+        return grupos.get(grupo);
+    }
+
+    public void setGrupos(List<String> grupos) {
+        this.grupos = grupos;
+    }
+
 }

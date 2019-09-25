@@ -8,11 +8,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.muriloacsonov.territorio.model.Cadastro;
+import com.muriloacsonov.territorio.model.Dirigente;
 
 public class WelcomeActivity extends AppCompatActivity implements WelcomeFragment1.ConcluidoListener {
 
@@ -56,7 +56,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
         return super.onOptionsItemSelected(item);
     }
 
-    public void onConcluir(Cadastro cadastro, boolean concluiu) {
+    public void onConcluir(Dirigente dirigente, boolean concluiu) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -69,6 +69,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
                 Intent mainActivity = new Intent(this, MainActivity.class);
 
+                mainActivity.putExtra("dirigente", dirigente);
                 startActivity(mainActivity);
                 finish();
 
@@ -79,7 +80,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
             Bundle bundle = new Bundle();
 
-            bundle.putSerializable("cadastro", cadastro);
+            bundle.putSerializable("dirigente", dirigente);
 
             WelcomeFragment2 welcomeFragment2 = new WelcomeFragment2();
             welcomeFragment2.setArguments(bundle);

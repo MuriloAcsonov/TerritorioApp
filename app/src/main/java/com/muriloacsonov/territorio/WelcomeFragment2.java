@@ -31,6 +31,8 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
 
     private List<Congregacao> mCongregacoes;
 
+    private Congregacao mCongregacao;
+
     private Dirigente cDirigente;
 
     @Override
@@ -58,7 +60,7 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
         spnCongregacao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                    Congregacao mCongregacao = mCongregacoes.get(position);
+                    mCongregacao = mCongregacoes.get(position);
 
                     if (mCongregacao.getGrupos() == null){
                         spnGrupo.setVisibility(View.INVISIBLE);
@@ -125,7 +127,7 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
 
             case R.id.btConcluir:
 
-                ((WelcomeActivity) getActivity()).onConcluir(cDirigente, true);
+                ((WelcomeActivity) getActivity()).onConcluir(cDirigente, mCongregacao, true);
 
                 break;
         }

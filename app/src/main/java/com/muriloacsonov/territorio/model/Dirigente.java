@@ -8,8 +8,10 @@ public class Dirigente implements Serializable {
     private String congregacao;
     private String email;
     private String senha;
-    private String grupo;
+    private int grupo;
     private Boolean adm;
+    //private String nmGrupo;
+    //private String nmCongregacao;
 
     //Getters and Setters
 
@@ -37,11 +39,11 @@ public class Dirigente implements Serializable {
         this.senha = senha;
     }
 
-    public String getGrupo() {
+    public int getGrupo() {
         return grupo;
     }
 
-    public void setGrupo(String grupo) {
+    public void setGrupo(int grupo) {
         this.grupo = grupo;
     }
 
@@ -60,4 +62,6 @@ public class Dirigente implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 }

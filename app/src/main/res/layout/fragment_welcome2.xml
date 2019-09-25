@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:spinnerMode="dialog"
         android:textColorHint="@color/gray"
-        android:textSize="25dp"
+        android:textSize="30dp"
         android:textColor="@color/lightgray"
         android:id="@+id/spnCongregacao"
         app:layout_constraintTop_toTopOf="parent"

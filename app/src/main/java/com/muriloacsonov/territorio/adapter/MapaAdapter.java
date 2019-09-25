@@ -1,5 +1,6 @@
 package com.muriloacsonov.territorio.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import com.muriloacsonov.territorio.R;
 import com.muriloacsonov.territorio.model.Dirigente;
 import com.muriloacsonov.territorio.model.Mapa;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHolder> {
@@ -45,23 +48,19 @@ public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHold
         Mapa mMapa = cMapas.get(position);
 
         holder.numeroMapa.setText("Mapa " + mMapa.getId());
-        holder.nomeGrupo.setText(mMapa.getNomeGrupo());
+        holder.nomeGrupo.setText(mMapa.getNmGrupo());
 
-        if (mMapa.getUsuario().isEmpty() || !cAdm) {
-            holder.infoMapa.setText(mMapa.getUltimabaixa().toDate().toString());
-        } else if(!mMapa.getUsuario().isEmpty() && cAdm) {
+        SimpleDateFormat mDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-            //String mNome = "";
+        if (mMapa.getUsuarioRef() == null || !cAdm) {
+            holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toDate()));
+        } else if(cAdm) {
 
-            //for(Dirigente mDirigente : cDirigentes){
-            //    if(mMapa.getUsuario() == mDirigente.getEmail()) mNome = mDirigente.getNome();
-            //}
-
-            if(mMapa.getUsuario().isEmpty()){
-                holder.infoMapa.setText(mMapa.getUltimabaixa().toDate().toString());
+            if(mMapa.getUsuarioRef() == null){
+                holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toDate()));
             }
             else{
-                holder.infoMapa.setText(mMapa.getUsuario());
+                holder.infoMapa.setText(mMapa.getUsuarioRef().getNome());
             }
 
         }

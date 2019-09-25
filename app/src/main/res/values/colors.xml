@@ -6,4 +6,6 @@
     <color name="gray">#a39ea2</color>
     <color name="superlightblue">#25CED1</color>
     <color name="black">#000</color>
+    <color name="filtersmain">#ededed</color>
+    <color name="white">#fff</color>
 </resources>

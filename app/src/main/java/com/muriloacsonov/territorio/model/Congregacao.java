@@ -42,4 +42,5 @@ public class Congregacao implements Serializable {
     public void setMapas(List<Mapa> mapas) {
         this.mapas = mapas;
     }
+
 }

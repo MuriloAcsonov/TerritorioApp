@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,12 +39,12 @@ public class MainHelper {
         cAdm = pAdm;
 
         if(cAdm){
-            ftEmUso.setVisibility(View.INVISIBLE);
-            ftGrupo.setVisibility(View.INVISIBLE);
-        }
-        else{
             ftEmUso.setVisibility(View.VISIBLE);
             ftGrupo.setVisibility(View.VISIBLE);
+        }
+        else{
+            ftEmUso.setVisibility(View.GONE);
+            ftGrupo.setVisibility(View.GONE);
         }
 
     }

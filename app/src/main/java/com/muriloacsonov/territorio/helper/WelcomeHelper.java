@@ -15,6 +15,7 @@ import java.util.List;
 public class WelcomeHelper {
 
     private EditText txtNome;
+    private EditText txtEmail;
     private EditText txtSenha;
     private Spinner spnCongregacao;
     private Spinner spnGrupo;
@@ -34,6 +35,7 @@ public class WelcomeHelper {
 
             case 1:
                 this.txtNome = (EditText) fragment.findViewById(R.id.edtNome);
+                this.txtEmail = (EditText) fragment.findViewById(R.id.edtEmail);
                 this.txtSenha = (EditText) fragment.findViewById(R.id.edtSenha);
                 break;
 
@@ -83,8 +85,8 @@ public class WelcomeHelper {
 
             try {
 
-                ArrayAdapter arrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, mNomes);
-                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ArrayAdapter arrayAdapter = new ArrayAdapter(view.getContext(), R.layout.spinner_welcome_item, mNomes);
+                arrayAdapter.setDropDownViewResource(R.layout.spinner_welcome_dropdown_item);
 
                 spnCongregacao.setAdapter(arrayAdapter);
 
@@ -109,8 +111,8 @@ public class WelcomeHelper {
 
         try {
 
-            ArrayAdapter arrayAdapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_spinner_item, pGrupos);
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter arrayAdapter = new ArrayAdapter(view.getContext(), R.layout.spinner_welcome_item, pGrupos);
+            arrayAdapter.setDropDownViewResource(R.layout.spinner_welcome_dropdown_item);
 
             spnGrupo.setAdapter(arrayAdapter);
 
@@ -131,6 +133,7 @@ public class WelcomeHelper {
 
         if (fragment1) {
             dirigente.setNome(this.txtNome.getText().toString());
+            dirigente.setEmail(this.txtEmail.getText().toString());
             dirigente.setSenha(this.txtSenha.getText().toString());
         }
 

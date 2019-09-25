@@ -1,6 +1,7 @@
 package com.muriloacsonov.territorio.model;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,9 +12,10 @@ public class Mapa implements Serializable {
     private int grupo;
     private String imagem;
     private Timestamp ultimabaixa;
+    private String nmGrupo;
+    @Exclude
+    private Dirigente usuarioRef;
     private String usuario;
-    private List<String> grupos;
-    //private List
 
     //GETTERS && SETTERS
     public String getId() {
@@ -48,6 +50,16 @@ public class Mapa implements Serializable {
         this.ultimabaixa = ultimabaixa;
     }
 
+    @Exclude
+    public Dirigente getUsuarioRef() {
+        return usuarioRef;
+    }
+
+    @Exclude
+    public void setUsuarioRef(Dirigente usuarioRef) {
+        this.usuarioRef = usuarioRef;
+    }
+
     public String getUsuario() {
         return usuario;
     }
@@ -56,12 +68,11 @@ public class Mapa implements Serializable {
         this.usuario = usuario;
     }
 
-    public String getNomeGrupo() {
-        return grupos.get(grupo);
+    public String getNmGrupo() {
+        return nmGrupo;
     }
 
-    public void setGrupos(List<String> grupos) {
-        this.grupos = grupos;
+    public void setNmGrupo(String nmGrupo) {
+        this.nmGrupo = nmGrupo;
     }
-
 }

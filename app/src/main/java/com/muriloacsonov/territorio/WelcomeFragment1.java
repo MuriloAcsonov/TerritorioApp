@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.muriloacsonov.territorio.helper.WelcomeHelper;
+import com.muriloacsonov.territorio.model.Congregacao;
 import com.muriloacsonov.territorio.model.Dirigente;
 
 public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
@@ -19,7 +21,7 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
     ConcluidoListener concluidoListener;
 
     public interface ConcluidoListener {
-        public void onConcluir(Dirigente dirigente, boolean concluiu);
+        public void onConcluir(Dirigente pDirigente, Congregacao pCongregacao, boolean pConcluiu);
     }
 
     @Override
@@ -65,9 +67,9 @@ public class WelcomeFragment1 extends Fragment implements View.OnClickListener {
 
                 if (valido) {
 
-                    Dirigente dirigente = welcomeHelper.getDirigente();
+                    Dirigente pDirigente = welcomeHelper.getDirigente();
 
-                    concluidoListener.onConcluir(dirigente, false);
+                    concluidoListener.onConcluir(pDirigente, null,false);
 
                 }
 

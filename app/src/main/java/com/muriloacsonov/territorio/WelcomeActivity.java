@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.muriloacsonov.territorio.model.Congregacao;
 import com.muriloacsonov.territorio.model.Dirigente;
 
 public class WelcomeActivity extends AppCompatActivity implements WelcomeFragment1.ConcluidoListener {
@@ -56,7 +57,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
         return super.onOptionsItemSelected(item);
     }
 
-    public void onConcluir(Dirigente dirigente, boolean concluiu) {
+    public void onConcluir(Dirigente pDirigente, Congregacao pCongregacao, boolean concluiu) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -69,7 +70,12 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
                 Intent mainActivity = new Intent(this, MainActivity.class);
 
-                mainActivity.putExtra("dirigente", dirigente);
+                mainActivity.putExtra("dirigente", pDirigente);
+
+                if(pCongregacao != null) {
+                    mainActivity.putExtra("congregacao", pCongregacao);
+                }
+
                 startActivity(mainActivity);
                 finish();
 
@@ -80,7 +86,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
             Bundle bundle = new Bundle();
 
-            bundle.putSerializable("dirigente", dirigente);
+            bundle.putSerializable("dirigente", pDirigente);
 
             WelcomeFragment2 welcomeFragment2 = new WelcomeFragment2();
             welcomeFragment2.setArguments(bundle);

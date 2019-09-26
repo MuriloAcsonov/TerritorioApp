@@ -113,9 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        //.whereEqualTo("usuario", cDirigente.getEmail())
-
-        firestore.collection("congregacao/"+cDirigente.getCongregacao()+"/mapa").orderBy("ultimabaixa").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firestore.collection("congregacao/"+cDirigente.getCongregacao()+"/mapa").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -171,62 +169,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadMyMaps(){
 
-        final List<Mapa> mMapas = new ArrayList<Mapa>();
+        List<Mapa> mMapas = new ArrayList<Mapa>();
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        for(Mapa mapa : cMapas){
 
-        firestore.collection("congregacao/"+cDirigente.getCongregacao()+"/mapa").whereEqualTo("usuario", cDirigente.getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if(mapa.getUsuarioRef() != null){
 
-                if (task.isSuccessful()) {
-
-                    int i = 0;
-
-                    Boolean stListaPronta = false;
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        final Mapa mMapa = document.toObject(Mapa.class);
-
-                        mMapa.setId(document.getId());
-
-                        mMapa.setNmGrupo(cCongregacao.getGrupos().get(mMapa.getGrupo()));
-
-                        DocumentReference documentReference = document.getDocumentReference("usuarioRef");
-                        if(documentReference != null){
-
-                            stListaPronta = i+1 == task.getResult().size();
-
-                            Task<DocumentSnapshot> taskDirigente = documentReference.get();
-
-                            final Boolean finalStListaPronta = stListaPronta;
-                            taskDirigente.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    Dirigente mDirigente = task.getResult().toObject(Dirigente.class);
-                                    mMapa.setUsuarioRef(mDirigente);
-                                    mMapas.add(mMapa);
-
-                                    if(finalStListaPronta) {
-                                        MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                                        mainHelper.CarregarListaMapas(mMapas, null);
-                                    }
-                                }
-
-                            });
-
-                        }
-                        else {
-                            mMapas.add(mMapa);
-                        }
-
-                        i++;
-
-                    }
+                if(mapa.getUsuario().equals(cDirigente.getEmail())){
+                    mMapas.add(mapa);
                 }
             }
-        });
+
+        }
+
+        if(mMapas.size() > 0){
+
+            MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+            mainHelper.CarregarListaMapas(mMapas, null);
+
+        }
+
+
 
     }
 

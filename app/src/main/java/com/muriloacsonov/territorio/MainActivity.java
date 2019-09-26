@@ -34,76 +34,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Dirigente cDirigente;
     Congregacao cCongregacao;
 
-    List<Mapa> cMapas;
+    List<Mapa> cMapas, cMapasFiltro;
 
-    Button ftFechado, ftMeusMapas;
+    Boolean cMeusMapas = false, cEmUso = false, cGrupo = false;
+    int recorrenciaClicks = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ftFechado = (Button) findViewById(R.id.ftRecorrencia);
-        ftFechado.setOnClickListener(this);
-        ftMeusMapas = (Button) findViewById(R.id.ftDisponivel);
-        ftMeusMapas.setOnClickListener(this);
+        Button ftFechado = (Button) findViewById(R.id.ftRecorrencia);
+         ftFechado.setOnClickListener(this);
+        Button ftMeusMapas = (Button) findViewById(R.id.ftDisponivel);
+         ftMeusMapas.setOnClickListener(this);
+        Button ftGrupo = (Button) findViewById(R.id.ftGrupo);
+        ftGrupo.setOnClickListener(this);
 
         Dirigente mDirigente = (Dirigente) getIntent().getSerializableExtra("dirigente");
         Congregacao mCongregacao = (Congregacao) getIntent().getSerializableExtra("congregacao");
-
         cDirigente = mDirigente;
         cCongregacao = mCongregacao;
 
-        loadMaps();
-
-    }
-
-    int recorrenciaClicks = 0;
-
-    private void RecorrenciaClick(Button button){
-
-        switch (recorrenciaClicks){
-
-            case 0:
-
-                Drawable filterDraw = getResources().getDrawable(R.drawable.ic_arrow_down);
-                filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
-
-                button.setCompoundDrawables(null, null, filterDraw, null);
-                button.setBackgroundTintList(getResources().getColorStateList(R.color.lightpurple));
-                button.setTextColor(getResources().getColorStateList(R.color.white));
-
-                recorrenciaClicks++;
-
-                break;
-
-            case 1:
-
-                filterDraw = getResources().getDrawable(R.drawable.ic_arrow_up);
-                filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
-
-                button.setCompoundDrawables(null, null, filterDraw, null);
-
-                recorrenciaClicks++;
-
-                break;
-
-            case 2:
-
-                filterDraw = getResources().getDrawable(R.drawable.ic_filter_du);
-                filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
-
-                button.setCompoundDrawables(null, null, filterDraw, null);
-                button.setBackgroundTintList(getResources().getColorStateList(R.color.filtersmain));
-                button.setTextColor(getResources().getColorStateList(R.color.black));
-
-                recorrenciaClicks = 0;
-
-                break;
-
-
-
+        if(mDirigente.getAdm()){
+            Button ftEmUso = (Button) findViewById(R.id.ftEmUso);
+            ftEmUso.setOnClickListener(this);
         }
+
+        loadMaps();
 
     }
 
@@ -141,7 +99,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                     MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
 
-                                    mainHelper.CarregarListaMapas(cMapas, null);
+                                    mainHelper.CarregarListaMapas(cMapas);
+
+                                    cMapasFiltro.addAll(cMapas);
+
                                 }
 
                             });
@@ -157,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
 
-                        mainHelper.CarregarListaMapas(cMapas, null);
+                        mainHelper.CarregarListaMapas(cMapas);
 
                     }
 
@@ -167,41 +128,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void loadMyMaps(){
-
-        List<Mapa> mMapas = new ArrayList<Mapa>();
-
-        for(Mapa mapa : cMapas){
-
-            if(mapa.getUsuarioRef() != null){
-
-                if(mapa.getUsuario().equals(cDirigente.getEmail())){
-                    mMapas.add(mapa);
-                }
-            }
-
-        }
-
-        if(mMapas.size() > 0){
-
-            MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-            mainHelper.CarregarListaMapas(mMapas, null);
-
-        }
-
-
-
-    }
-
-    Boolean cMeusMapas = false;
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
 
             case R.id.ftRecorrencia:
 
-                RecorrenciaClick((Button)v);
+                switch (recorrenciaClicks){
+
+                    case 0:
+
+                        Drawable filterDraw = getResources().getDrawable(R.drawable.ic_arrow_down);
+                        filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
+
+                        ((Button)v).setCompoundDrawables(null, null, filterDraw, null);
+                        ((Button)v).setBackgroundTintList(getResources().getColorStateList(R.color.lightpurple));
+                        ((Button)v).setTextColor(getResources().getColorStateList(R.color.white));
+
+                        List<Mapa> mMapas = new ArrayList<Mapa>();
+                        mMapas.addAll(cMapas);
+                        mMapas = MainHelper.ultimabaixaFiltro(mMapas, recorrenciaClicks);
+                        MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+                        mainHelper.CarregarListaMapas(mMapas);
+
+                        recorrenciaClicks++;
+
+                        break;
+
+                    case 1:
+
+                        filterDraw = getResources().getDrawable(R.drawable.ic_arrow_up);
+                        filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
+
+                        ((Button)v).setCompoundDrawables(null, null, filterDraw, null);
+
+                        mMapas = new ArrayList<Mapa>();
+                        mMapas.addAll(cMapas);
+                        mMapas = MainHelper.ultimabaixaFiltro(mMapas, recorrenciaClicks);
+                        mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+                        mainHelper.CarregarListaMapas(mMapas);
+
+                        recorrenciaClicks++;
+
+                        break;
+
+                    case 2:
+
+                        filterDraw = getResources().getDrawable(R.drawable.ic_filter_du);
+                        filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
+
+                        ((Button)v).setCompoundDrawables(null, null, filterDraw, null);
+                        ((Button)v).setBackgroundTintList(getResources().getColorStateList(R.color.filtersmain));
+                        ((Button)v).setTextColor(getResources().getColorStateList(R.color.black));
+
+                        mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+                        mainHelper.CarregarListaMapas(cMapas);
+
+                        recorrenciaClicks = 0;
+
+                        break;
+
+                }
 
                 break;
 
@@ -209,16 +196,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if(cMeusMapas){
                     cMeusMapas = false;
-                    ftMeusMapas.setBackgroundTintList(getResources().getColorStateList(R.color.filtersmain));
-                    ftMeusMapas.setTextColor(getResources().getColorStateList(R.color.black));
+                    ((Button)v).setBackgroundTintList(getResources().getColorStateList(R.color.filtersmain));
+                    ((Button)v).setTextColor(getResources().getColorStateList(R.color.black));
+
+                    if(cGrupo){
+
+                    }
+
                     MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                    mainHelper.CarregarListaMapas(cMapas, null);
+                    mainHelper.CarregarListaMapas(cMapas);
                 }
                 else {
                     cMeusMapas = true;
-                    ftMeusMapas.setBackgroundTintList(getResources().getColorStateList(R.color.lightpurple));
-                    ftMeusMapas.setTextColor(getResources().getColorStateList(R.color.white));
-                    loadMyMaps();
+                    ((Button)v).setBackgroundTintList(getResources().getColorStateList(R.color.lightpurple));
+                    ((Button)v).setTextColor(getResources().getColorStateList(R.color.white));
+                    MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+                    //mainHelper.CarregarListaMapas(mMapas);
                 }
 
                 break;

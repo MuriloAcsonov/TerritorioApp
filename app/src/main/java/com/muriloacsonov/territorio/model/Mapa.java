@@ -4,6 +4,8 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class Mapa implements Serializable {
@@ -75,4 +77,24 @@ public class Mapa implements Serializable {
     public void setNmGrupo(String nmGrupo) {
         this.nmGrupo = nmGrupo;
     }
+
+
+    public static class MapaAscSort implements Comparator<Mapa>{
+
+        @Override
+        public int compare(Mapa m1, Mapa m2) {
+            return m1.getUltimabaixa().compareTo(m2.getUltimabaixa());
+        }
+
+    }
+
+    public static class MapaDescSort implements Comparator<Mapa>{
+
+        @Override
+        public int compare(Mapa m1, Mapa m2) {
+            return m2.getUltimabaixa().compareTo(m1.getUltimabaixa());
+        }
+
+    }
+
 }

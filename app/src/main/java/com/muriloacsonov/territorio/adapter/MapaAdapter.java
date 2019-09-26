@@ -20,12 +20,10 @@ public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHold
 
     private List<Mapa> cMapas;
     private Boolean cAdm;
-    List<Dirigente> cDirigentes;
 
-    public MapaAdapter(List<Mapa> pMapas, List<Dirigente> pDirigentes, Boolean pAdm) {
+    public MapaAdapter(List<Mapa> pMapas, Boolean pAdm) {
         this.cMapas = pMapas;
         cAdm = pAdm;
-       // cDirigentes = pDirigentes;
     }
 
     public Object getItem(int i) {
@@ -47,22 +45,18 @@ public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHold
 
         Mapa mMapa = cMapas.get(position);
 
-        holder.numeroMapa.setText("Mapa " + mMapa.getId());
-        holder.nomeGrupo.setText(mMapa.getNmGrupo());
-
-        SimpleDateFormat mDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        if (mMapa.getUsuarioRef() == null || !cAdm) {
-            holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toDate()));
-        } else if(cAdm) {
-
-            if(mMapa.getUsuarioRef() == null){
-                holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toDate()));
-            }
-            else{
+        if(mMapa.getUsuarioRef() != null) {
+            if(cAdm){
+                holder.numeroMapa.setText("Mapa " + mMapa.getId());
+                holder.nomeGrupo.setText(mMapa.getNmGrupo());
                 holder.infoMapa.setText(mMapa.getUsuarioRef().getNome());
             }
-
+        }
+        else{
+            holder.numeroMapa.setText("Mapa " + mMapa.getId());
+            holder.nomeGrupo.setText(mMapa.getNmGrupo());
+            SimpleDateFormat mDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toDate()));
         }
 
     }

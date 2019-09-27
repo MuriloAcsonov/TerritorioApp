@@ -9,7 +9,7 @@ public class Filtros {
     private Boolean stMeusMapas;
     private Boolean stEmUso;
     private Boolean stGrupo;
-    private int fechado;
+    private Boolean stFechado;
     private Dirigente dirigente;
     private int orderBy;
     private int grupo;
@@ -54,12 +54,12 @@ public class Filtros {
         this.stGrupo = stGrupo;
     }
 
-    public int getFechado() {
-        return fechado;
+    public Boolean getStFechado() {
+        return stFechado;
     }
 
-    public void setFechado(int fechado) {
-        this.fechado = fechado;
+    public void setStFechado(Boolean stFechado) {
+        this.stFechado = stFechado;
     }
 
     public Dirigente getDirigente() {

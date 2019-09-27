@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.muriloacsonov.territorio.helper.MainHelper;
 import com.muriloacsonov.territorio.model.Congregacao;
 import com.muriloacsonov.territorio.model.Dirigente;
+import com.muriloacsonov.territorio.model.Filtros;
 import com.muriloacsonov.territorio.model.Mapa;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     List<Mapa> cMapas, cMapasFiltro;
 
-    Boolean cMeusMapas = false, cEmUso = false, cGrupo = false;
+    Boolean cMeusMapas = false, cEmUso = false, cGrupo = false, cFechado = false;
     int recorrenciaClicks = 0;
 
     @Override
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void loadMaps(){
 
         cMapas = new ArrayList<Mapa>();
+        cMapasFiltro = new ArrayList<Mapa>();
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
@@ -130,88 +132,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+
+        Filtros mFiltro = new Filtros();
+        mFiltro.setMapas(cMapas);
+        mFiltro.setMapasFiltro(cMapasFiltro);
+        mFiltro.setStEmUso(cEmUso);
+        mFiltro.setStGrupo(cGrupo);
+        mFiltro.setStMeusMapas(cMeusMapas);
+        mFiltro.setDirigente(cDirigente);
+        mFiltro.setOrderBy(recorrenciaClicks);
+        mFiltro.setStFechado(cFechado);
+
         switch (v.getId()){
 
             case R.id.ftRecorrencia:
 
-                switch (recorrenciaClicks){
+                cFechado = true;
 
-                    case 0:
-
-                        Drawable filterDraw = getResources().getDrawable(R.drawable.ic_arrow_down);
-                        filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
-
-                        ((Button)v).setCompoundDrawables(null, null, filterDraw, null);
-                        ((Button)v).setBackgroundTintList(getResources().getColorStateList(R.color.lightpurple));
-                        ((Button)v).setTextColor(getResources().getColorStateList(R.color.white));
-
-                        List<Mapa> mMapas = new ArrayList<Mapa>();
-                        mMapas.addAll(cMapas);
-                        mMapas = MainHelper.ultimabaixaFiltro(mMapas, recorrenciaClicks);
-                        MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                        mainHelper.CarregarListaMapas(mMapas);
-
-                        recorrenciaClicks++;
-
-                        break;
-
-                    case 1:
-
-                        filterDraw = getResources().getDrawable(R.drawable.ic_arrow_up);
-                        filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
-
-                        ((Button)v).setCompoundDrawables(null, null, filterDraw, null);
-
-                        mMapas = new ArrayList<Mapa>();
-                        mMapas.addAll(cMapas);
-                        mMapas = MainHelper.ultimabaixaFiltro(mMapas, recorrenciaClicks);
-                        mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                        mainHelper.CarregarListaMapas(mMapas);
-
-                        recorrenciaClicks++;
-
-                        break;
-
-                    case 2:
-
-                        filterDraw = getResources().getDrawable(R.drawable.ic_filter_du);
-                        filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
-
-                        ((Button)v).setCompoundDrawables(null, null, filterDraw, null);
-                        ((Button)v).setBackgroundTintList(getResources().getColorStateList(R.color.filtersmain));
-                        ((Button)v).setTextColor(getResources().getColorStateList(R.color.black));
-
-                        mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                        mainHelper.CarregarListaMapas(cMapas);
-
-                        recorrenciaClicks = 0;
-
-                        break;
-
+                if(recorrenciaClicks == 2){
+                    cFechado = false;
+                    recorrenciaClicks = 0;
                 }
+                else{
+                    recorrenciaClicks++;
+                }
+
+                MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+                List<Mapa> mMapas = mainHelper.aplicarFiltros(mFiltro);
+                mainHelper.CarregarListaMapas(mMapas);
 
                 break;
 
             case R.id.ftDisponivel:
 
                 if(cMeusMapas){
+                    mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+                    mMapas = mainHelper.aplicarFiltros(mFiltro);
+                    mainHelper.CarregarListaMapas(mMapas);
                     cMeusMapas = false;
-                    ((Button)v).setBackgroundTintList(getResources().getColorStateList(R.color.filtersmain));
-                    ((Button)v).setTextColor(getResources().getColorStateList(R.color.black));
-
-                    if(cGrupo){
-
-                    }
-
-                    MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                    mainHelper.CarregarListaMapas(cMapas);
                 }
                 else {
+                    mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+                    mMapas = mainHelper.aplicarFiltros(mFiltro);
+                    mainHelper.CarregarListaMapas(mMapas);
                     cMeusMapas = true;
-                    ((Button)v).setBackgroundTintList(getResources().getColorStateList(R.color.lightpurple));
-                    ((Button)v).setTextColor(getResources().getColorStateList(R.color.white));
-                    MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                    //mainHelper.CarregarListaMapas(mMapas);
                 }
 
                 break;

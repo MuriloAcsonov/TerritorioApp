@@ -2,6 +2,7 @@ package com.muriloacsonov.territorio.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 
@@ -50,6 +51,11 @@ public class MainHelper {
             ftEmUso.setVisibility(View.GONE);
         }
 
+        ftMeusMapas.setEnabled(true);
+        ftEmUso.setEnabled(true);
+        ftFechado.setEnabled(true);
+        ftGrupo.setEnabled(true);
+
     }
 
     public void CarregarListaMapas(List<Mapa> pMapas){
@@ -62,32 +68,161 @@ public class MainHelper {
 
     }
 
-    public static List<Mapa> aplicarFiltros(Filtros pFiltro){
+    public List<Mapa> aplicarFiltros(Filtros pFiltro){
+
+        Boolean stFiltroAplicado = false;
 
         if(pFiltro.getStMeusMapas()){
 
             pFiltro.setMapasFiltro(meusMapasFiltro(pFiltro.getMapas(), pFiltro.getDirigente()));
+            ftMeusMapas.setBackgroundTintList(cActivity.getResources().getColorStateList(R.color.lightpurple));
+            ftMeusMapas.setTextColor(cActivity.getResources().getColorStateList(R.color.white));
 
+            ftEmUso.setEnabled(false);
+            ftFechado.setEnabled(false);
+
+            stFiltroAplicado = true;
+
+        }
+        else{
+            ftMeusMapas.setBackgroundTintList(cActivity.getResources().getColorStateList(R.color.filtersmain));
+            ftMeusMapas.setTextColor(cActivity.getResources().getColorStateList(R.color.black));
+            ftFechado.setEnabled(true);
         }
 
         if(pFiltro.getStGrupo()){
 
-            pFiltro.setMapasFiltro(grupoFiltro(pFiltro.getMapas(), pFiltro.getGrupo()));
+            if(stFiltroAplicado){
+                pFiltro.setMapasFiltro(grupoFiltro(pFiltro.getMapasFiltro(), pFiltro.getGrupo()));
+            }
+            else{
+                pFiltro.setMapasFiltro(grupoFiltro(pFiltro.getMapas(), pFiltro.getGrupo()));
+                ftEmUso.setEnabled(true);
+                stFiltroAplicado = true;
+            }
+
+            ftFechado.setEnabled(true);
+            ftMeusMapas.setEnabled(true);
+
+            ftGrupo.setBackgroundTintList(cActivity.getResources().getColorStateList(R.color.lightpurple));
+            ftGrupo.setTextColor(cActivity.getResources().getColorStateList(R.color.white));
+
+        }
+        else{
+            ftGrupo.setBackgroundTintList(cActivity.getResources().getColorStateList(R.color.filtersmain));
+            ftGrupo.setTextColor(cActivity.getResources().getColorStateList(R.color.black));
+        }
+
+        if(pFiltro.getStFechado()){
+
+            List<Mapa> mMapa;
+
+            if(stFiltroAplicado){
+                mMapa = pFiltro.getMapasFiltro();
+            }
+            else{
+                mMapa = new ArrayList<Mapa>();
+                mMapa.addAll(pFiltro.getMapas());
+
+                if(pFiltro.getOrderBy() == 2){
+                    stFiltroAplicado = false;
+                }
+                else{
+                    stFiltroAplicado = true;
+                }
+            }
+
+            if(!pFiltro.getStMeusMapas()){
+                ftMeusMapas.setEnabled(false);
+            }
+            else{
+                ftMeusMapas.setEnabled(true);
+            }
+
+            switch (pFiltro.getOrderBy()){
+
+                case 1:
+
+                    Drawable filterDraw = cActivity.getResources().getDrawable(R.drawable.ic_arrow_down);
+                    filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
+
+                    ftFechado.setCompoundDrawables(null, null, filterDraw, null);
+                    ftFechado.setBackgroundTintList(cActivity.getResources().getColorStateList(R.color.lightpurple));
+                    ftFechado.setTextColor(cActivity.getResources().getColorStateList(R.color.white));
+
+                    pFiltro.setMapasFiltro(ultimabaixaFiltro(mMapa, pFiltro.getOrderBy()));
+
+                    break;
+
+                case 2:
+
+                    filterDraw = cActivity.getResources().getDrawable(R.drawable.ic_arrow_up);
+                    filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
+
+                    ftFechado.setCompoundDrawables(null, null, filterDraw, null);
+
+                    pFiltro.setMapasFiltro(ultimabaixaFiltro(mMapa, pFiltro.getOrderBy()));
+
+                    break;
+
+            }
+
+        }
+        else{
+
+            Drawable filterDraw = cActivity.getResources().getDrawable(R.drawable.ic_filter_du);
+            filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
+
+            ftFechado.setCompoundDrawables(null, null, filterDraw, null);
+            ftFechado.setBackgroundTintList(cActivity.getResources().getColorStateList(R.color.filtersmain));
+            ftFechado.setTextColor(cActivity.getResources().getColorStateList(R.color.black));
+
+            pFiltro.setMapasFiltro(pFiltro.getMapasFiltro());
 
         }
 
         if(pFiltro.getStEmUso()){
 
-            pFiltro.setMapasFiltro(emusoFiltro(pFiltro.getMapas()));
+            if(stFiltroAplicado){
+                pFiltro.setMapasFiltro(emusoFiltro(pFiltro.getMapasFiltro()));
+            }
+            else{
+                pFiltro.setMapasFiltro(emusoFiltro(pFiltro.getMapas()));
+                stFiltroAplicado = true;
+            }
+
+            ftFechado.setEnabled(false);
+            ftMeusMapas.setEnabled(false);
+
+            ftEmUso.setBackgroundTintList(cActivity.getResources().getColorStateList(R.color.lightpurple));
+            ftEmUso.setTextColor(cActivity.getResources().getColorStateList(R.color.white));
+
+        }
+        else{
+            ftEmUso.setBackgroundTintList(cActivity.getResources().getColorStateList(R.color.filtersmain));
+            ftEmUso.setTextColor(cActivity.getResources().getColorStateList(R.color.black));
+        }
+
+        if(!stFiltroAplicado){
+
+            List<Mapa> mMapa = new ArrayList<Mapa>();
+            mMapa.addAll(pFiltro.getMapas());
+
+            pFiltro.setMapasFiltro(mMapa);
+
+            ftMeusMapas.setEnabled(true);
+            ftEmUso.setEnabled(true);
+            ftFechado.setEnabled(true);
+            ftGrupo.setEnabled(true);
 
         }
 
-        return null;
+        return pFiltro.getMapasFiltro();
     }
 
-    public static List<Mapa> meusMapasFiltro(List<Mapa> pMapas, Dirigente pUsuario){
+    private List<Mapa> meusMapasFiltro(List<Mapa> pMapas, Dirigente pUsuario){
 
-        List<Mapa> mMapas = pMapas;
+        List<Mapa> mMapas = new ArrayList<Mapa>();
 
         for(Mapa mapa : pMapas){
 
@@ -104,17 +239,17 @@ public class MainHelper {
 
     }
 
-    public static List<Mapa> ultimabaixaFiltro(List<Mapa> pMapas, int pOrderBy){
+    private List<Mapa> ultimabaixaFiltro(List<Mapa> pMapas, int pOrderBy){
 
         switch (pOrderBy){
 
-            case 0:
+            case 1:
 
                 Collections.sort(pMapas, new Mapa.MapaAscSort());
 
                 break;
 
-            case 1:
+            case 2:
 
                 Collections.sort(pMapas, new Mapa.MapaDescSort());
 
@@ -126,23 +261,30 @@ public class MainHelper {
 
     }
 
-    public static List<Mapa> grupoFiltro(List<Mapa> pMapas, int pGrupo){
+    private List<Mapa> grupoFiltro(List<Mapa> pMapas, int pGrupo){
 
         List<Mapa> mMapas = new ArrayList<Mapa>();
 
-        for(Mapa mMapa : pMapas){
+        if(pGrupo >= 0) {
 
-            if(mMapa.getGrupo() == pGrupo){
-                mMapas.add(mMapa);
+            for (Mapa mMapa : pMapas) {
+
+                if (mMapa.getGrupo() == pGrupo) {
+                    mMapas.add(mMapa);
+                }
+
             }
 
+        }
+        else{
+            mMapas.addAll(pMapas);
         }
 
         return mMapas;
 
     }
 
-    public static List<Mapa> emusoFiltro(List<Mapa> pMapas){
+    private List<Mapa> emusoFiltro(List<Mapa> pMapas){
 
         List<Mapa> mMapas = new ArrayList<Mapa>();
 

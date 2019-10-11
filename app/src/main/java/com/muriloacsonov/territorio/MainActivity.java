@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.protobuf.Internal;
 import com.muriloacsonov.territorio.adapter.MapaAdapter;
 import com.muriloacsonov.territorio.helper.MainHelper;
 import com.muriloacsonov.territorio.model.Congregacao;
@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ftGrupo.setOnClickListener(this);
 
         RecyclerView mListMaps = (RecyclerView) findViewById(R.id.rvwMapas);
-
-
 
         Dirigente mDirigente = (Dirigente) getIntent().getSerializableExtra("dirigente");
         Congregacao mCongregacao = (Congregacao) getIntent().getSerializableExtra("congregacao");
@@ -197,6 +195,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mMapa = cMapas.get(pPosition);
 
         }
+
+        Intent mMapaAct = new Intent(this, MapaActivity.class);
+
+        mMapaAct.putExtra("mapa", mMapa);
+        mMapaAct.putExtra("tipo", 0);
+
+        startActivity(mMapaAct);
 
     }
 }

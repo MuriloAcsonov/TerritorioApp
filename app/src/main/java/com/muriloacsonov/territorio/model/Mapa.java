@@ -15,11 +15,14 @@ public class Mapa implements Serializable {
     private String imagem;
     private Timestamp ultimabaixa;
     private String nmGrupo;
+    private String[] observacoes;
+    private String observacao;
     @Exclude
     private Dirigente usuarioRef;
     private String usuario;
 
     //GETTERS && SETTERS
+
     public String getId() {
         return id;
     }
@@ -76,6 +79,22 @@ public class Mapa implements Serializable {
 
     public void setNmGrupo(String nmGrupo) {
         this.nmGrupo = nmGrupo;
+    }
+
+    public String[] getObservacoes() {
+        return observacoes;
+    }
+
+    public void setObservacoes(String[] observacoes) {
+        this.observacoes = observacoes;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 
 

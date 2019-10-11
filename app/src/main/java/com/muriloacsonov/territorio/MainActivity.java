@@ -2,35 +2,30 @@ package com.muriloacsonov.territorio;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.protobuf.Internal;
+import com.muriloacsonov.territorio.adapter.MapaAdapter;
 import com.muriloacsonov.territorio.helper.MainHelper;
 import com.muriloacsonov.territorio.model.Congregacao;
 import com.muriloacsonov.territorio.model.Dirigente;
 import com.muriloacsonov.territorio.model.Filtros;
 import com.muriloacsonov.territorio.model.Mapa;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, MapaAdapter.onMapItemListener {
 
     Dirigente cDirigente;
     Congregacao cCongregacao;
@@ -51,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          ftMeusMapas.setOnClickListener(this);
         Button ftGrupo = (Button) findViewById(R.id.ftGrupo);
         ftGrupo.setOnClickListener(this);
+
+        RecyclerView mListMaps = (RecyclerView) findViewById(R.id.rvwMapas);
+
+
 
         Dirigente mDirigente = (Dirigente) getIntent().getSerializableExtra("dirigente");
         Congregacao mCongregacao = (Congregacao) getIntent().getSerializableExtra("congregacao");
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                     MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
 
-                                    mainHelper.CarregarListaMapas(cMapas);
+                                    mainHelper.CarregarListaMapas(cMapas, MainActivity.this);
 
                                     cMapasFiltro.addAll(cMapas);
 
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
 
-                        mainHelper.CarregarListaMapas(cMapas);
+                        mainHelper.CarregarListaMapas(cMapas, MainActivity.this);
 
                     }
 
@@ -159,26 +158,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
                 List<Mapa> mMapas = mainHelper.aplicarFiltros(mFiltro);
-                mainHelper.CarregarListaMapas(mMapas);
+                mainHelper.CarregarListaMapas(mMapas, MainActivity.this);
 
                 break;
 
             case R.id.ftDisponivel:
 
+                mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+
                 if(cMeusMapas){
-                    mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
                     mMapas = mainHelper.aplicarFiltros(mFiltro);
-                    mainHelper.CarregarListaMapas(mMapas);
                     cMeusMapas = false;
                 }
                 else {
-                    mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
                     mMapas = mainHelper.aplicarFiltros(mFiltro);
-                    mainHelper.CarregarListaMapas(mMapas);
                     cMeusMapas = true;
                 }
 
+                mainHelper.CarregarListaMapas(mMapas, MainActivity.this);
+
                 break;
+
         }
+    }
+
+    @Override
+    public void onMapClick(int pPosition) {
+
+        Mapa mMapa;
+
+        if(cMeusMapas || cEmUso || cGrupo || cFechado || recorrenciaClicks > 0){
+
+            mMapa = cMapasFiltro.get(pPosition);
+
+        }
+        else {
+
+            mMapa = cMapas.get(pPosition);
+
+        }
+
     }
 }

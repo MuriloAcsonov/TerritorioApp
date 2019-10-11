@@ -20,10 +20,12 @@ public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHold
 
     private List<Mapa> cMapas;
     private Boolean cAdm;
+    private onMapItemListener cMapItemListener;
 
-    public MapaAdapter(List<Mapa> pMapas, Boolean pAdm) {
+    public MapaAdapter(List<Mapa> pMapas, Boolean pAdm, onMapItemListener pMapItemListener) {
         this.cMapas = pMapas;
         cAdm = pAdm;
+        this.cMapItemListener = pMapItemListener;
     }
 
     public Object getItem(int i) {
@@ -35,7 +37,7 @@ public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHold
 
         View mView = LayoutInflater.from(parent.getContext()).inflate( R.layout.item_mapa_lista, null);
 
-        CustomViewHolder customViewHolder = new CustomViewHolder(mView);
+        CustomViewHolder customViewHolder = new CustomViewHolder(mView, cMapItemListener);
 
         return customViewHolder;
     }
@@ -71,20 +73,37 @@ public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHold
         return cMapas.size();
     }
 
-    class CustomViewHolder extends RecyclerView.ViewHolder{
+    class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         protected TextView numeroMapa;
         protected TextView nomeGrupo;
         protected TextView infoMapa;
+        protected onMapItemListener mMapItemListener;
 
-        public CustomViewHolder(View pView){
+        public CustomViewHolder(View pView, onMapItemListener pMapItemListener){
             super(pView);
 
             this.numeroMapa = (TextView) pView.findViewById(R.id.item_numero_mapa);
             this.nomeGrupo = (TextView) pView.findViewById(R.id.item_nome_grupo);
             this.infoMapa = (TextView) pView.findViewById(R.id.item_info_mapa);
+            this.mMapItemListener = pMapItemListener;
+
+            pView.setOnClickListener(this);
 
         }
+
+        @Override
+        public void onClick(View v) {
+
+            mMapItemListener.onMapClick(getAdapterPosition());
+
+        }
+
+    }
+
+    public interface onMapItemListener{
+
+        void onMapClick(int pPosition);
 
     }
 

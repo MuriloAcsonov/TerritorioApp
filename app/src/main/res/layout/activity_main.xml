@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/ftDisponivel"
+                android:layout_height="35dp"
+                android:textSize="20dp"
+                android:text="Meus Mapas"
+                android:textColor="@color/black"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:background="@drawable/button_filtros"
+                />
+
+            <Button
+                android:layout_marginLeft="15dp"
+                android:layout_height="35dp"
+                android:textSize="20dp"
+                android:id="@+id/ftRecorrencia"
+                android:text="Fechado"
+                android:drawableRight="@drawable/ic_filter_du"
+                android:drawablePadding="5dp"
+                android:textColor="@color/black"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:background="@drawable/button_filtros"
+                />
+
+            <Button
+                android:layout_marginLeft="15dp"
+                android:id="@+id/ftEmUso"
+                android:layout_height="35dp"
+                android:textSize="20dp"
+                android:text="Em Uso"
+                android:textColor="@color/black"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:background="@drawable/button_filtros"
+                />
+
+            <Button
+                android:layout_marginLeft="15dp"
+                android:id="@+id/ftGrupo"
+                android:layout_height="35dp"
+                android:textSize="20dp"
+                android:text="Grupo"
+                android:textColor="@color/black"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:background="@drawable/button_filtros"
+                />
+
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rvwMapas"
+        />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

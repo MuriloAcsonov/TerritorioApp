@@ -59,9 +59,9 @@ public class MainHelper {
 
     }
 
-    public void CarregarListaMapas(List<Mapa> pMapas){
+    public void CarregarListaMapas(List<Mapa> pMapas, MapaAdapter.onMapItemListener pMapItemListener){
 
-        MapaAdapter mapaAdapter = new MapaAdapter(pMapas, cAdm);
+        MapaAdapter mapaAdapter = new MapaAdapter(pMapas, cAdm, pMapItemListener);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(cActivity.getApplicationContext());
         listaMapas.setLayoutManager(mLayoutManager);
         listaMapas.setItemAnimator(new DefaultItemAnimator());

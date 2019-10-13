@@ -2,49 +2,38 @@ package com.muriloacsonov.territorio;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.muriloacsonov.territorio.adapter.MapaAdapter;
 import com.muriloacsonov.territorio.helper.MainHelper;
 import com.muriloacsonov.territorio.model.Congregacao;
 import com.muriloacsonov.territorio.model.Dirigente;
 import com.muriloacsonov.territorio.model.Filtros;
 import com.muriloacsonov.territorio.model.Mapa;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, MapaAdapter.onMapItemListener {
 
     Dirigente cDirigente;
     Congregacao cCongregacao;
 
     List<Mapa> cMapas, cMapasFiltro;
 
-    Filtros cFiltro;
-
-    Boolean cMeusMapas = false, cEmUso = false, cFechado = false;
-    int recorrenciaClicks = 0, indexGrupo = -1;
+    Boolean cMeusMapas = false, cEmUso = false, cGrupo = false, cFechado = false;
+    int recorrenciaClicks = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          ftMeusMapas.setOnClickListener(this);
         Button ftGrupo = (Button) findViewById(R.id.ftGrupo);
         ftGrupo.setOnClickListener(this);
+
+        RecyclerView mListMaps = (RecyclerView) findViewById(R.id.rvwMapas);
 
         Dirigente mDirigente = (Dirigente) getIntent().getSerializableExtra("dirigente");
         Congregacao mCongregacao = (Congregacao) getIntent().getSerializableExtra("congregacao");
@@ -107,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                     MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
 
-                                    mainHelper.CarregarListaMapas(cMapas);
+                                    mainHelper.CarregarListaMapas(cMapas, MainActivity.this);
 
                                     cMapasFiltro.addAll(cMapas);
 
@@ -126,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
 
-                        mainHelper.CarregarListaMapas(cMapas);
+                        mainHelper.CarregarListaMapas(cMapas, MainActivity.this);
 
                     }
 
@@ -139,121 +130,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        cFiltro = new Filtros();
-        cFiltro.setMapas(cMapas);
-        cFiltro.setMapasFiltro(cMapasFiltro);
-        cFiltro.setStEmUso(cEmUso);
-        cFiltro.setGrupo(indexGrupo);
-        cFiltro.setStMeusMapas(cMeusMapas);
-        cFiltro.setDirigente(cDirigente);
-        cFiltro.setOrderBy(recorrenciaClicks);
-        cFiltro.setStFechado(cFechado);
-
-        final MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+        Filtros mFiltro = new Filtros();
+        mFiltro.setMapas(cMapas);
+        mFiltro.setMapasFiltro(cMapasFiltro);
+        mFiltro.setStEmUso(cEmUso);
+        mFiltro.setStGrupo(cGrupo);
+        mFiltro.setStMeusMapas(cMeusMapas);
+        mFiltro.setDirigente(cDirigente);
+        mFiltro.setOrderBy(recorrenciaClicks);
+        mFiltro.setStFechado(cFechado);
 
         switch (v.getId()){
 
             case R.id.ftRecorrencia:
 
                 cFechado = true;
-                cFiltro.setStFechado(cFechado);
 
                 if(recorrenciaClicks == 2){
                     cFechado = false;
-                    cFiltro.setStFechado(cFechado);
                     recorrenciaClicks = 0;
                 }
                 else{
                     recorrenciaClicks++;
                 }
 
-                cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
-                mainHelper.CarregarListaMapas(cMapasFiltro);
+                MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+                List<Mapa> mMapas = mainHelper.aplicarFiltros(mFiltro);
+                mainHelper.CarregarListaMapas(mMapas, MainActivity.this);
 
                 break;
 
             case R.id.ftDisponivel:
 
+                mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
+
                 if(cMeusMapas){
+                    mMapas = mainHelper.aplicarFiltros(mFiltro);
                     cMeusMapas = false;
-                    cFiltro.setStMeusMapas(cMeusMapas);
-                    cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
-                    mainHelper.CarregarListaMapas(cMapasFiltro);
                 }
                 else {
+                    mMapas = mainHelper.aplicarFiltros(mFiltro);
                     cMeusMapas = true;
-                    cFiltro.setStMeusMapas(cMeusMapas);
-                    cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
-                    mainHelper.CarregarListaMapas(cMapasFiltro);
                 }
+
+                mainHelper.CarregarListaMapas(mMapas, MainActivity.this);
 
                 break;
 
-            case R.id.ftEmUso:
-
-                if(cEmUso){
-                    cEmUso = false;
-                    cFiltro.setStEmUso(cEmUso);
-                    cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
-                    mainHelper.CarregarListaMapas(cMapasFiltro);
-                }
-                else{
-                    cEmUso = true;
-                    cFiltro.setStEmUso(cEmUso);
-                    cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
-                    mainHelper.CarregarListaMapas(cMapasFiltro);
-                }
-
-                break;
-
-            case R.id.ftGrupo:
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Escolha o grupo");
-                builder.setCancelable(false);
-
-                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        cFiltro.setGrupo(indexGrupo);
-                        cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
-                        mainHelper.CarregarListaMapas(cMapasFiltro);
-
-                    }
-                });
-
-                builder.setNegativeButton("Limpar Filtro", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        indexGrupo = -1;
-                        cFiltro.setGrupo(indexGrupo);
-                        cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
-                        mainHelper.CarregarListaMapas(cMapasFiltro);
-
-                    }
-                });
-
-                String[] mGrupos = cCongregacao.getGrupos().toArray(new String[cCongregacao.getGrupos().size()]);
-
-                builder.setSingleChoiceItems(mGrupos, indexGrupo, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int pIndexGrupo) {
-                        indexGrupo = pIndexGrupo;
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-                break;
         }
     }
 
-    private void filtrarGrupo(Filtros pFiltros,  List<Mapa> pMapas){
+    @Override
+    public void onMapClick(int pPosition) {
 
+        Mapa mMapa;
 
+        if(cMeusMapas || cEmUso || cGrupo || cFechado || recorrenciaClicks > 0){
+
+            mMapa = cMapasFiltro.get(pPosition);
+
+        }
+        else {
+
+            mMapa = cMapas.get(pPosition);
+
+        }
+
+        Intent mMapaAct = new Intent(this, MapaActivity.class);
+
+        mMapaAct.putExtra("mapa", mMapa);
+        mMapaAct.putExtra("tipo", 0);
+
+        startActivity(mMapaAct);
 
     }
-
 }

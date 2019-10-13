@@ -3,10 +3,13 @@ package com.muriloacsonov.territorio;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ import com.muriloacsonov.territorio.model.Filtros;
 import com.muriloacsonov.territorio.model.Mapa;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -37,8 +41,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     List<Mapa> cMapas, cMapasFiltro;
 
-    Boolean cMeusMapas = false, cEmUso = false, cGrupo = false, cFechado = false;
-    int recorrenciaClicks = 0;
+    Filtros cFiltro;
+
+    Boolean cMeusMapas = false, cEmUso = false, cFechado = false;
+    int recorrenciaClicks = 0, indexGrupo = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,52 +139,121 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        Filtros mFiltro = new Filtros();
-        mFiltro.setMapas(cMapas);
-        mFiltro.setMapasFiltro(cMapasFiltro);
-        mFiltro.setStEmUso(cEmUso);
-        mFiltro.setStGrupo(cGrupo);
-        mFiltro.setStMeusMapas(cMeusMapas);
-        mFiltro.setDirigente(cDirigente);
-        mFiltro.setOrderBy(recorrenciaClicks);
-        mFiltro.setStFechado(cFechado);
+        cFiltro = new Filtros();
+        cFiltro.setMapas(cMapas);
+        cFiltro.setMapasFiltro(cMapasFiltro);
+        cFiltro.setStEmUso(cEmUso);
+        cFiltro.setGrupo(indexGrupo);
+        cFiltro.setStMeusMapas(cMeusMapas);
+        cFiltro.setDirigente(cDirigente);
+        cFiltro.setOrderBy(recorrenciaClicks);
+        cFiltro.setStFechado(cFechado);
+
+        final MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
 
         switch (v.getId()){
 
             case R.id.ftRecorrencia:
 
                 cFechado = true;
+                cFiltro.setStFechado(cFechado);
 
                 if(recorrenciaClicks == 2){
                     cFechado = false;
+                    cFiltro.setStFechado(cFechado);
                     recorrenciaClicks = 0;
                 }
                 else{
                     recorrenciaClicks++;
                 }
 
-                MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                List<Mapa> mMapas = mainHelper.aplicarFiltros(mFiltro);
-                mainHelper.CarregarListaMapas(mMapas);
+                cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
+                mainHelper.CarregarListaMapas(cMapasFiltro);
 
                 break;
 
             case R.id.ftDisponivel:
 
                 if(cMeusMapas){
-                    mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                    mMapas = mainHelper.aplicarFiltros(mFiltro);
-                    mainHelper.CarregarListaMapas(mMapas);
                     cMeusMapas = false;
+                    cFiltro.setStMeusMapas(cMeusMapas);
+                    cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
+                    mainHelper.CarregarListaMapas(cMapasFiltro);
                 }
                 else {
-                    mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-                    mMapas = mainHelper.aplicarFiltros(mFiltro);
-                    mainHelper.CarregarListaMapas(mMapas);
                     cMeusMapas = true;
+                    cFiltro.setStMeusMapas(cMeusMapas);
+                    cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
+                    mainHelper.CarregarListaMapas(cMapasFiltro);
                 }
+
+                break;
+
+            case R.id.ftEmUso:
+
+                if(cEmUso){
+                    cEmUso = false;
+                    cFiltro.setStEmUso(cEmUso);
+                    cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
+                    mainHelper.CarregarListaMapas(cMapasFiltro);
+                }
+                else{
+                    cEmUso = true;
+                    cFiltro.setStEmUso(cEmUso);
+                    cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
+                    mainHelper.CarregarListaMapas(cMapasFiltro);
+                }
+
+                break;
+
+            case R.id.ftGrupo:
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Escolha o grupo");
+                builder.setCancelable(false);
+
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        cFiltro.setGrupo(indexGrupo);
+                        cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
+                        mainHelper.CarregarListaMapas(cMapasFiltro);
+
+                    }
+                });
+
+                builder.setNegativeButton("Limpar Filtro", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        indexGrupo = -1;
+                        cFiltro.setGrupo(indexGrupo);
+                        cMapasFiltro = mainHelper.aplicarFiltros(cFiltro);
+                        mainHelper.CarregarListaMapas(cMapasFiltro);
+
+                    }
+                });
+
+                String[] mGrupos = cCongregacao.getGrupos().toArray(new String[cCongregacao.getGrupos().size()]);
+
+                builder.setSingleChoiceItems(mGrupos, indexGrupo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int pIndexGrupo) {
+                        indexGrupo = pIndexGrupo;
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
                 break;
         }
     }
+
+    private void filtrarGrupo(Filtros pFiltros,  List<Mapa> pMapas){
+
+
+
+    }
+
 }

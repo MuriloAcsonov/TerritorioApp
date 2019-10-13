@@ -3,6 +3,7 @@ package com.muriloacsonov.territorio.helper;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -90,7 +91,7 @@ public class MainHelper {
             ftFechado.setEnabled(true);
         }
 
-        if(pFiltro.getStGrupo()){
+        if(pFiltro.getGrupo() != -1){
 
             if(stFiltroAplicado){
                 pFiltro.setMapasFiltro(grupoFiltro(pFiltro.getMapasFiltro(), pFiltro.getGrupo()));
@@ -134,14 +135,16 @@ public class MainHelper {
 
             if(!pFiltro.getStMeusMapas()){
                 ftMeusMapas.setEnabled(false);
+                ftEmUso.setEnabled(false);
             }
             else{
                 ftMeusMapas.setEnabled(true);
+                ftEmUso.setEnabled(true);
             }
 
             switch (pFiltro.getOrderBy()){
 
-                case 1:
+                case 0:
 
                     Drawable filterDraw = cActivity.getResources().getDrawable(R.drawable.ic_arrow_down);
                     filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
@@ -154,7 +157,7 @@ public class MainHelper {
 
                     break;
 
-                case 2:
+                case 1:
 
                     filterDraw = cActivity.getResources().getDrawable(R.drawable.ic_arrow_up);
                     filterDraw.setBounds( 0, 0, filterDraw.getIntrinsicWidth(), filterDraw.getIntrinsicHeight() );
@@ -241,23 +244,35 @@ public class MainHelper {
 
     private List<Mapa> ultimabaixaFiltro(List<Mapa> pMapas, int pOrderBy){
 
+        List<Mapa> mMapas = new ArrayList<Mapa>();
+
+        for(Mapa mMapa : pMapas){
+
+            if(mMapa.getUsuarioRef() == null){
+
+                mMapas.add(mMapa);
+
+            }
+
+        }
+
         switch (pOrderBy){
 
-            case 1:
+            case 0:
 
-                Collections.sort(pMapas, new Mapa.MapaAscSort());
+                Collections.sort(mMapas, new Mapa.MapaAscSort());
 
                 break;
 
-            case 2:
+            case 1:
 
-                Collections.sort(pMapas, new Mapa.MapaDescSort());
+                Collections.sort(mMapas, new Mapa.MapaDescSort());
 
                 break;
 
         }
 
-        return pMapas;
+        return mMapas;
 
     }
 

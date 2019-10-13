@@ -78,7 +78,6 @@ public class WelcomeHelper {
 
         for (int i = 0; i < pCongregacoes.size(); i++) {
             mNomes[i] = pCongregacoes.get(i).getNome();
-            Log.i("ID CONGREGACAO", pCongregacoes.get(i).getId());
         }
 
         if (mNomes.length > 0) {

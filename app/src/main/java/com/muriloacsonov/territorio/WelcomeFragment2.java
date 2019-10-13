@@ -104,7 +104,7 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
                         Congregacao mCongregacao = document.toObject(Congregacao.class);
                         mCongregacao.setId(document.getId());
                         mCongregacoes.add(mCongregacao);
-                        Log.i("Get Congregacoes", "Congregacoes geradas com sucesso");
+
                     }
 
                     if(mCongregacoes.size() > 0){

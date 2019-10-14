@@ -5,7 +5,6 @@ import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class Mapa implements Serializable {
@@ -15,11 +14,11 @@ public class Mapa implements Serializable {
     private String imagem;
     private Timestamp ultimabaixa;
     private String nmGrupo;
-    private String[] observacoes;
+    private List<String> observacoes;
     private String observacao;
+    private String usuario;
     @Exclude
     private Dirigente usuarioRef;
-    private String usuario;
 
     //GETTERS && SETTERS
 
@@ -55,16 +54,6 @@ public class Mapa implements Serializable {
         this.ultimabaixa = ultimabaixa;
     }
 
-    @Exclude
-    public Dirigente getUsuarioRef() {
-        return usuarioRef;
-    }
-
-    @Exclude
-    public void setUsuarioRef(Dirigente usuarioRef) {
-        this.usuarioRef = usuarioRef;
-    }
-
     public String getUsuario() {
         return usuario;
     }
@@ -81,11 +70,11 @@ public class Mapa implements Serializable {
         this.nmGrupo = nmGrupo;
     }
 
-    public String[] getObservacoes() {
+    public List<String> getObservacoes() {
         return observacoes;
     }
 
-    public void setObservacoes(String[] observacoes) {
+    public void setObservacoes(List<String> observacoes) {
         this.observacoes = observacoes;
     }
 
@@ -97,23 +86,14 @@ public class Mapa implements Serializable {
         this.observacao = observacao;
     }
 
-
-    public static class MapaAscSort implements Comparator<Mapa>{
-
-        @Override
-        public int compare(Mapa m1, Mapa m2) {
-            return m1.getUltimabaixa().compareTo(m2.getUltimabaixa());
-        }
-
+    @Exclude
+    public Dirigente getUsuarioRef() {
+        return usuarioRef;
     }
 
-    public static class MapaDescSort implements Comparator<Mapa>{
-
-        @Override
-        public int compare(Mapa m1, Mapa m2) {
-            return m2.getUltimabaixa().compareTo(m1.getUltimabaixa());
-        }
-
+    @Exclude
+    public void setUsuarioRef(Dirigente usuarioRef) {
+        this.usuarioRef = usuarioRef;
     }
 
 }

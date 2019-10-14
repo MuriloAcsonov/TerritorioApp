@@ -10,8 +10,6 @@ public class Dirigente implements Serializable {
     private String senha;
     private int grupo;
     private Boolean adm;
-    //private String nmGrupo;
-    //private String nmCongregacao;
 
     //Getters and Setters
 

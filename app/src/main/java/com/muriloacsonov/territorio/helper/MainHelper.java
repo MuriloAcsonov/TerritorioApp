@@ -260,13 +260,13 @@ public class MainHelper {
 
             case 0:
 
-                Collections.sort(mMapas, new Mapa.MapaAscSort());
+                Collections.sort(mMapas, new MapaSort.MapaAscSort());
 
                 break;
 
             case 1:
 
-                Collections.sort(mMapas, new Mapa.MapaDescSort());
+                Collections.sort(mMapas, new MapaSort.MapaDescSort());
 
                 break;
 

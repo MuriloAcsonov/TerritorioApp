@@ -14,7 +14,7 @@ public class MapaActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_mapa);
 
-        Mapa mMapa = (Mapa) getIntent().getSerializableExtra("mapa");
+        //Mapa mMapa = (Mapa) getIntent().getSerializableExtra("mapa");
         int mTipo = (int) getIntent().getSerializableExtra("tipo");
 
         switch (mTipo){

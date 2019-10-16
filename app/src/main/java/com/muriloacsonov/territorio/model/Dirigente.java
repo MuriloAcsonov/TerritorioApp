@@ -1,8 +1,11 @@
 package com.muriloacsonov.territorio.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class Dirigente implements Serializable {
+public class Dirigente implements Parcelable {
 
     private String nome;
     private String congregacao;
@@ -10,6 +13,15 @@ public class Dirigente implements Serializable {
     private String senha;
     private int grupo;
     private Boolean adm;
+
+    private Dirigente(Parcel pParcel){
+
+        nome = pParcel.readString();
+        nome = pParcel.readString();
+        nome = pParcel.readString();
+        nome = pParcel.readString();
+
+    }
 
     //Getters and Setters
 
@@ -61,5 +73,34 @@ public class Dirigente implements Serializable {
         this.email = email;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeString(nome);
+        dest.writeString(congregacao);
+        dest.writeString(email);
+        dest.writeString(senha);
+        dest.writeInt(grupo);
+        dest.writeBoolean(adm);
+
+    }
+
+    public static final Parcelable.Creator<Dirigente>
+            CREATOR = new Parcelable.Creator<Dirigente>() {
+
+        public Dirigente createFromParcel(Parcel pParcel) {
+            return new Dirigente(pParcel);
+        }
+
+        public Dirigente[] newArray(int size) {
+            return new Dirigente[size];
+        }
+    };
 
 }

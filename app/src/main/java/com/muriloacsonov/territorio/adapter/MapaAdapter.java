@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.muriloacsonov.territorio.R;
 import com.muriloacsonov.territorio.model.Dirigente;
 import com.muriloacsonov.territorio.model.Mapa;
@@ -58,7 +59,7 @@ public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHold
             holder.numeroMapa.setText("Mapa " + mMapa.getId());
             holder.nomeGrupo.setText(mMapa.getNmGrupo());
             SimpleDateFormat mDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toDate()));
+            holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toString()));
         }
 
     }

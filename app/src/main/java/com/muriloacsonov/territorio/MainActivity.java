@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -251,18 +252,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onMapClick(int pPosition) {
 
-        Mapa mMapa;
+        Mapa mMapa = cMapas.get(pPosition);
 
         if(cMeusMapas || cEmUso || cFechado || recorrenciaClicks > 0){
 
             mMapa = cMapasFiltro.get(pPosition);
 
         }
-        else {
 
-            mMapa = cMapas.get(pPosition);
-
-        }
+        Log.i("MAPA-ID-CLICADO", mMapa.getId());
 
         Intent mMapaAct = new Intent(this, MapaActivity.class);
 
@@ -272,4 +270,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(mMapaAct);
 
     }
+
 }

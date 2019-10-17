@@ -50,9 +50,9 @@ public class WelcomeFragment2 extends Fragment implements View.OnClickListener  
 
         Bundle bundle = getArguments();
 
-        Dirigente dirigente = (Dirigente) bundle.getSerializable("dirigente");
+        Dirigente dirigente = (Dirigente) bundle.getParcelable("dirigente");
 
-        cDirigente = (Dirigente) bundle.getSerializable("dirigente");
+        cDirigente = (Dirigente) bundle.getParcelable("dirigente");
 
         final Spinner spnCongregacao = (Spinner) mView.findViewById(R.id.spnCongregacao);
         final Spinner spnGrupo = (Spinner) mView.findViewById(R.id.spnGrupo);

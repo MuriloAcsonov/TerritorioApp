@@ -25,8 +25,19 @@ public class Mapa implements Parcelable {
     //GETTERS && SETTERS
 
     private Mapa(Parcel pParcel){
-        //codigo = from.readInt();
-        //nome = from.readString();
+
+        id = pParcel.readString();
+        grupo = pParcel.readInt();
+        imagem = pParcel.readString();
+        long[] mTimestamp = new long[2];
+        pParcel.readLongArray(mTimestamp);
+        ultimabaixa = new Timestamp(mTimestamp[0], (int) mTimestamp[1]);
+        nmGrupo = pParcel.readString();
+        pParcel.readList(observacoes, String.class.getClassLoader());
+        observacao = pParcel.readString();
+        usuario = pParcel.readString();
+        usuarioRef = pParcel.readParcelable(Dirigente.class.getClassLoader());
+
     }
 
     public String getId() {
@@ -114,6 +125,7 @@ public class Mapa implements Parcelable {
         dest.writeString(id);
         dest.writeInt(grupo);
         dest.writeString(imagem);
+        ultimabaixa.writeToParcel(dest, flags);
         dest.writeLongArray(new long[] {ultimabaixa.getSeconds(), Long.valueOf(ultimabaixa.getNanoseconds())});
         dest.writeLong(ultimabaixa.getSeconds());
         dest.writeInt(ultimabaixa.getNanoseconds());
@@ -121,18 +133,7 @@ public class Mapa implements Parcelable {
         dest.writeList(observacoes);
         dest.writeString(observacao);
         dest.writeString(usuario);
-        dest.writeParcelable(usuarioRef);
-
-        private String id;
-        private int grupo;
-        private String imagem;
-        private Timestamp ultimabaixa;
-        private String nmGrupo;
-        private List<String> observacoes;
-        private String observacao;
-        private String usuario;
-        @Exclude
-        private Dirigente usuarioRef;
+        dest.writeParcelable(usuarioRef, flags);
 
     }
 

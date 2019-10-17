@@ -86,7 +86,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
             Bundle bundle = new Bundle();
 
-            bundle.putSerializable("dirigente", pDirigente);
+            bundle.putParcelable("dirigente", pDirigente);
 
             WelcomeFragment2 welcomeFragment2 = new WelcomeFragment2();
             welcomeFragment2.setArguments(bundle);

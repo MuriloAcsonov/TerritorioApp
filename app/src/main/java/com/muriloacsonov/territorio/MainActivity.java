@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         RecyclerView mListMaps = (RecyclerView) findViewById(R.id.rvwMapas);
 
-        Dirigente mDirigente = (Dirigente) getIntent().getSerializableExtra("dirigente");
+        Dirigente mDirigente = (Dirigente) getIntent().getExtras().getParcelable("dirigente");
         Congregacao mCongregacao = (Congregacao) getIntent().getSerializableExtra("congregacao");
         cDirigente = mDirigente;
         cCongregacao = mCongregacao;

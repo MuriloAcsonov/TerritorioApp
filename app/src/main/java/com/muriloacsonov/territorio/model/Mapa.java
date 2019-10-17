@@ -24,14 +24,28 @@ public class Mapa implements Parcelable {
 
     //GETTERS && SETTERS
 
-    private Mapa(Parcel pParcel){
+    public Mapa(){}
+
+    public Mapa(String pId, int pGrupo, String pImage, Timestamp pUltimaBaixa, String pnmGrupo, List<String> pObservacoes, String pObservacao, String pUsuario, Dirigente pUsuarioRef){
+
+        id = pId;
+        grupo = pGrupo;
+        imagem = pImage;
+        ultimabaixa = pUltimaBaixa;
+        nmGrupo = pnmGrupo;
+        observacoes = pObservacoes;
+        observacao = pObservacao;
+        usuario = pUsuario;
+        usuarioRef = pUsuarioRef;
+
+    }
+
+    protected Mapa(Parcel pParcel){
 
         id = pParcel.readString();
         grupo = pParcel.readInt();
         imagem = pParcel.readString();
-        long[] mTimestamp = new long[2];
-        pParcel.readLongArray(mTimestamp);
-        ultimabaixa = new Timestamp(mTimestamp[0], (int) mTimestamp[1]);
+        ultimabaixa = pParcel.readParcelable(Timestamp.class.getClassLoader());
         nmGrupo = pParcel.readString();
         pParcel.readList(observacoes, String.class.getClassLoader());
         observacao = pParcel.readString();
@@ -125,10 +139,7 @@ public class Mapa implements Parcelable {
         dest.writeString(id);
         dest.writeInt(grupo);
         dest.writeString(imagem);
-        ultimabaixa.writeToParcel(dest, flags);
-        dest.writeLongArray(new long[] {ultimabaixa.getSeconds(), Long.valueOf(ultimabaixa.getNanoseconds())});
-        dest.writeLong(ultimabaixa.getSeconds());
-        dest.writeInt(ultimabaixa.getNanoseconds());
+        dest.writeParcelable(ultimabaixa, flags);
         dest.writeString(nmGrupo);
         dest.writeList(observacoes);
         dest.writeString(observacao);

@@ -29,8 +29,6 @@ public class WelcomeHelper {
 
         this.view = fragment;
 
-        this.dirigente = new Dirigente();
-
         switch ((int) fragment.getTag()) {
 
             case 1:
@@ -128,12 +126,12 @@ public class WelcomeHelper {
 
     }
 
-    public Dirigente getDirigente() {
+    public Dirigente getDirigenteLogin() {
 
         if (fragment1) {
-            dirigente.setNome(this.txtNome.getText().toString());
-            dirigente.setEmail(this.txtEmail.getText().toString());
-            dirigente.setSenha(this.txtSenha.getText().toString());
+
+            this.dirigente = new Dirigente(this.txtNome.getText().toString(), null, this.txtEmail.getText().toString(), this.txtSenha.getText().toString(), -1, false);
+
         }
 
         return dirigente;

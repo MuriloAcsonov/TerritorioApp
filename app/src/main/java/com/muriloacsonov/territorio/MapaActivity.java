@@ -1,6 +1,7 @@
 package com.muriloacsonov.territorio;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
@@ -14,8 +15,14 @@ public class MapaActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_mapa);
 
-        //Mapa mMapa = (Mapa) getIntent().getSerializableExtra("mapa");
+        Mapa mMapa = (Mapa) getIntent().getSerializableExtra("mapa");
         int mTipo = (int) getIntent().getSerializableExtra("tipo");
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        fragmentTransaction.replace(R.id.frame_Mapa, new MapaFragmentInfo());
+
+        fragmentTransaction.commit();
 
         switch (mTipo){
 

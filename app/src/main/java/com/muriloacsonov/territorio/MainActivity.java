@@ -26,7 +26,6 @@ import com.muriloacsonov.territorio.model.Dirigente;
 import com.muriloacsonov.territorio.model.Filtros;
 import com.muriloacsonov.territorio.model.Mapa;
 
-import java.security.DomainLoadStoreParameter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button ftGrupo = (Button) findViewById(R.id.ftGrupo);
         ftGrupo.setOnClickListener(this);
 
-        RecyclerView mListMaps = (RecyclerView) findViewById(R.id.rvwMapas);
+        //RecyclerView mListMaps = (RecyclerView) findViewById(R.id.rvwMapas);
 
         Dirigente mDirigente = (Dirigente) getIntent().getExtras().getParcelable("dirigente");
         Congregacao mCongregacao = (Congregacao) getIntent().getSerializableExtra("congregacao");
@@ -259,8 +258,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mMapa = cMapasFiltro.get(pPosition);
 
         }
-
-        Log.i("MAPA-ID-CLICADO", mMapa.getId());
 
         Intent mMapaAct = new Intent(this, MapaActivity.class);
 

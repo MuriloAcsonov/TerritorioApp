@@ -59,7 +59,7 @@ public class MapaAdapter extends RecyclerView.Adapter<MapaAdapter.CustomViewHold
             holder.numeroMapa.setText("Mapa " + mMapa.getId());
             holder.nomeGrupo.setText(mMapa.getNmGrupo());
             SimpleDateFormat mDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toString()));
+            holder.infoMapa.setText(mDateFormat.format(mMapa.getUltimabaixa().toDate()));
         }
 
     }

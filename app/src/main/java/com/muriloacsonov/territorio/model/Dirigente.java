@@ -14,6 +14,19 @@ public class Dirigente implements Parcelable {
     private int grupo;
     private Boolean adm;
 
+    public Dirigente(){}
+
+    public Dirigente(String pNome, String pCongregacao, String pEmail, String pSenha, int pGrupo, boolean pAdm){
+
+        nome = pNome;
+        congregacao = pCongregacao;
+        email = pEmail;
+        senha = pSenha;
+        grupo = pGrupo;
+        adm = pAdm;
+
+    }
+
     protected Dirigente(Parcel pParcel){
 
         nome = pParcel.readString();

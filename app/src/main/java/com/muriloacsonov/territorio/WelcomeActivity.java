@@ -80,7 +80,6 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
         else {
 
             Bundle bundle = new Bundle();
-
             bundle.putParcelable("dirigente", pDirigente);
 
             WelcomeFragment2 welcomeFragment2 = new WelcomeFragment2();

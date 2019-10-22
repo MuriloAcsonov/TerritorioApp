@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button ftGrupo = (Button) findViewById(R.id.ftGrupo);
         ftGrupo.setOnClickListener(this);
 
-        //RecyclerView mListMaps = (RecyclerView) findViewById(R.id.rvwMapas);
-
         Dirigente mDirigente = (Dirigente) getIntent().getExtras().getParcelable("dirigente");
         Congregacao mCongregacao = (Congregacao) getIntent().getSerializableExtra("congregacao");
         cDirigente = mDirigente;
@@ -99,11 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     Dirigente mDirigente = task.getResult().toObject(Dirigente.class);
+                                    mDirigente.setEmail(task.getResult().getId());
                                     mMapa.setUsuarioRef(mDirigente);
                                     cMapas.add(mMapa);
 
                                     MainHelper mainHelper = new MainHelper(MainActivity.this, cDirigente.getAdm());
-
                                     mainHelper.CarregarListaMapas(cMapas, MainActivity.this);
 
                                     cMapasFiltro.addAll(cMapas);
@@ -262,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent mMapaAct = new Intent(this, MapaActivity.class);
 
         mMapaAct.putExtra("mapa", mMapa);
+        mMapaAct.putExtra("dirigente", cDirigente);
         mMapaAct.putExtra("tipo", 0);
 
         startActivity(mMapaAct);

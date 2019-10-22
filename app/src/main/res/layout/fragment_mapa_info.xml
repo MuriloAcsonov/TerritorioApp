@@ -10,176 +10,184 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="280dp"
         android:padding="10dp"
         android:id="@+id/LayoutPhoto"
         android:background="@drawable/card_map"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/ScrollInfo"
+        app:layout_constraintBottom_toTopOf="@+id/LayoutInfo"
         app:layout_constraintVertical_chainStyle="packed"
         android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/imgMapa"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:src="@drawable/ic_image_nophoto" />
 
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/LayoutInfo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ScrollInfo"
+        android:layout_height="0dp"
+        android:layout_marginTop="0dp"
         android:orientation="vertical"
+        android:padding="10dp"
         android:paddingBottom="30dp"
         app:layout_constraintTop_toBottomOf="@id/LayoutPhoto"
-        android:layout_marginTop="5dp" >
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:layout_editor_absoluteX="10dp">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/ScrollInfo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvwGrupoMapa"
-                android:textColor="@color/gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:textSize="20dp"
-                android:textAlignment="center"
-                android:text="Grupo" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:padding="5dp"
-                android:background="@drawable/card_infomap"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvwInfoVariavel"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:textSize="20dp"
-                    android:text="Última Baixa" />
-
-                <TextView
-                    android:id="@+id/tvwData"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="25dp"
-                    android:textAlignment="center"
-                    android:text="05/05/1999" />
-
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/lytObservacoesMapa"
-                android:layout_marginTop="15dp"
-                android:padding="10dp"
-                android:background="@drawable/card_infomap" >
-
-                <TextView
-                    android:id="@+id/tvwObservacoesMapa"
-                    android:textColor="@color/black"
+                    android:id="@+id/tvwGrupoMapa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/btMaisObservacoes"
-                    android:textSize="20dp"
-                    android:text="Observações do Mapa" />
-
-
-                <Button
-                    android:id="@+id/btMaisObservacoes"
-                    android:background="@drawable/button_mais_accordion"
-                    android:textColor="@color/black"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:foreground="@drawable/ic_add"
-                    android:foregroundGravity="center"
-                    android:foregroundTint="@color/black"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:id="@+id/lytListaObservacoes"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:padding="10dp"
-                android:orientation="vertical" >
-
-                <ListView
-                    android:id="@+id/lswObservacoes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"/>
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fbtAddObservacaoMapa"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:backgroundTint="#e3e35f"
-                    android:foreground="@drawable/ic_add"
-                    android:foregroundGravity="center"
-                    android:layout_gravity="bottom|right"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="5dp"
-                android:id="@+id/lytUltimaObservacao"
-                android:background="@drawable/card_infomap"
-                android:layout_gravity="bottom|center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:textColor="@color/gray"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:textSize="15dp"
-                    android:text="Relembrar" />
-
-                <TextView
-                    android:id="@+id/tvwUltimaObservacao"
+                    android:text="Grupo"
+                    android:textAlignment="center"
                     android:textColor="@color/gray"
+                    android:textSize="20dp" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="20dp"
-                    android:textAlignment="center"
-                    android:text="alguma coisa" />
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/card_infomap"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvwInfoVariavel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="Última Baixa"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/tvwData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="05/05/1999"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="25dp" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/lytObservacoesMapa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/card_infomap"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tvwObservacoesMapa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Observações do Mapa"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/btMaisObservacoes"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/btMaisObservacoes"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/button_mais_accordion"
+                        android:foreground="@drawable/ic_add"
+                        android:foregroundGravity="center"
+                        android:foregroundTint="@color/black"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/LayoutLista"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:padding="10dp">
+
+                    <ListView
+                        android:id="@+id/lswObservacoes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="20dp" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fbtAddObservacaoMapa"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="bottom|right"
+                        android:foreground="@drawable/ic_add"
+                        android:foregroundGravity="center"
+                        app:backgroundTint="#e3e35f" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LayoutUltimaObservacao"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/card_infomap"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="Relembrar"
+                        android:textColor="@color/gray"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/tvwUltimaObservacao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="alguma coisa"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp" />
+        </ScrollView>
 
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

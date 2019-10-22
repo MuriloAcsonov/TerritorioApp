@@ -7,6 +7,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mapa implements Parcelable {
@@ -15,6 +16,7 @@ public class Mapa implements Parcelable {
     private int grupo;
     private String imagem;
     private Timestamp ultimabaixa;
+    private Timestamp emprestimo;
     private String nmGrupo;
     private List<String> observacoes;
     private String observacao;
@@ -22,16 +24,17 @@ public class Mapa implements Parcelable {
     @Exclude
     private Dirigente usuarioRef;
 
-    //GETTERS && SETTERS
+    //CONSTRUTORES
 
     public Mapa(){}
 
-    public Mapa(String pId, int pGrupo, String pImage, Timestamp pUltimaBaixa, String pnmGrupo, List<String> pObservacoes, String pObservacao, String pUsuario, Dirigente pUsuarioRef){
+    public Mapa(String pId, int pGrupo, String pImage, Timestamp pUltimaBaixa, Timestamp pEmprestimo, String pnmGrupo, List<String> pObservacoes, String pObservacao, String pUsuario, Dirigente pUsuarioRef){
 
         id = pId;
         grupo = pGrupo;
         imagem = pImage;
         ultimabaixa = pUltimaBaixa;
+        emprestimo = pEmprestimo;
         nmGrupo = pnmGrupo;
         observacoes = pObservacoes;
         observacao = pObservacao;
@@ -46,13 +49,19 @@ public class Mapa implements Parcelable {
         grupo = pParcel.readInt();
         imagem = pParcel.readString();
         ultimabaixa = pParcel.readParcelable(Timestamp.class.getClassLoader());
+        emprestimo = pParcel.readParcelable(Timestamp.class.getClassLoader());
         nmGrupo = pParcel.readString();
+
+        this.observacoes = new ArrayList<String>();
         pParcel.readList(observacoes, String.class.getClassLoader());
+
         observacao = pParcel.readString();
         usuario = pParcel.readString();
         usuarioRef = pParcel.readParcelable(Dirigente.class.getClassLoader());
 
     }
+
+    //GETTERS && SETTERS
 
     public String getId() {
         return id;
@@ -84,6 +93,14 @@ public class Mapa implements Parcelable {
 
     public void setUltimabaixa(Timestamp ultimabaixa) {
         this.ultimabaixa = ultimabaixa;
+    }
+
+    public Timestamp getEmprestimo() {
+        return emprestimo;
+    }
+
+    public void setEmprestimo(Timestamp emprestimo) {
+        this.emprestimo = emprestimo;
     }
 
     public String getUsuario() {
@@ -128,6 +145,8 @@ public class Mapa implements Parcelable {
         this.usuarioRef = usuarioRef;
     }
 
+    //MAIS
+
     @Override
     public int describeContents() {
         return 0;
@@ -140,6 +159,7 @@ public class Mapa implements Parcelable {
         dest.writeInt(grupo);
         dest.writeString(imagem);
         dest.writeParcelable(ultimabaixa, flags);
+        dest.writeParcelable(emprestimo, flags);
         dest.writeString(nmGrupo);
         dest.writeList(observacoes);
         dest.writeString(observacao);
@@ -148,8 +168,7 @@ public class Mapa implements Parcelable {
 
     }
 
-    public static final Parcelable.Creator<Mapa>
-            CREATOR = new Parcelable.Creator<Mapa>() {
+    public static final Parcelable.Creator<Mapa> CREATOR = new Parcelable.Creator<Mapa>() {
 
         public Mapa createFromParcel(Parcel pParcel) {
             return new Mapa(pParcel);

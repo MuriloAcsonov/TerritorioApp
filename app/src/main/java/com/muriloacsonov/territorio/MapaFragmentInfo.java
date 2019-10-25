@@ -10,6 +10,9 @@ import android.widget.Button;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.muriloacsonov.territorio.helper.MapaHelper;
 import com.muriloacsonov.territorio.model.Dirigente;
 import com.muriloacsonov.territorio.model.Mapa;
@@ -48,6 +51,20 @@ public class MapaFragmentInfo extends Fragment implements View.OnClickListener {
 
         ConstraintLayout mLayoutMais = (ConstraintLayout) view.findViewById(R.id.lytObservacoesMapa);
         mLayoutMais.setOnClickListener(this);
+
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference mPhotoReference = mStorage.child(mMapa.getImagem());
+
+        final long mMegabyte = 1024 * 1024;
+
+        mPhotoReference.getBytes(mMegabyte).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] pBytes) {
+
+                cHelper.CarregarImagem(pBytes);
+
+            }
+        });
 
         return view;
 

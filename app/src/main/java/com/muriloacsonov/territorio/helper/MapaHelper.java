@@ -1,9 +1,9 @@
 package com.muriloacsonov.territorio.helper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -124,6 +124,14 @@ public class MapaHelper {
         mFilterDraw.setBounds( 0, 0, mFilterDraw.getIntrinsicWidth(), mFilterDraw.getIntrinsicHeight());
 
         cBtnMais.setForeground(mFilterDraw);
+
+    }
+
+    public void CarregarImagem(byte[] pBytes){
+
+        Bitmap mBitmap = BitmapFactory.decodeByteArray(pBytes, 0 , pBytes.length);
+
+        cImageMapa.setImageBitmap(mBitmap);
 
     }
 
